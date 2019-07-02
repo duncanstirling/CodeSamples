@@ -1,0 +1,32 @@
+# users table
+administrator, admnin@admin.com, password
+
+# companies table
+name (required), email, logo (minimum 100×100), website
+
+# employees table
+firstName (required), lastName (required), company (foreign key to Companies), email, phone
+#================================================================
+# Laravel 
+TestProject to manage companies and their employees. Mini-CRM.
+
+# Basic Laravel Auth: ability to log in as administrator
+Use database seeds to create first user with email admin@admin.com and password “password”
+
+# CRUD functionality (Create / Read / Update / Delete) for two menu items: 
+Companies and Employees.
+
+# Companies DB table: 
+Name (required), email, logo (minimum 100×100), website
+
+# Employees DB table: 
+First name (required), last name (required), Company (foreign key to Companies), email, phone
+
+Use database migrations to create those schemas above. 
+Store companies logos make them accessible from public.
+Use basic Laravel resource controllers with default methods – index, create, store etc.
+Use Laravel’s validation function, using Request classes.
+Use Laravel’s pagination for showing Companies/Employees list, 10 entriesper page.
+Use Laravel make:auth as default Bootstrap-based design theme, but remove ability to register.
+Email notification: send email whenever new company is entered (use Mailgun or Mailtrap).
+1 or 2 unit tests
