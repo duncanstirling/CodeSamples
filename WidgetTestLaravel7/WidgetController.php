@@ -61,8 +61,7 @@ class WidgetController extends Controller
 	}
 	
 	private function showResult($response, $range, $n){
-		echo "<br />#################################################</br>
-		# UNIT TESTING AGAINST VALID OUTCOME<br /></br>";
+		echo "</br># UNIT TESTING AGAINST VALID OUTCOME<br /></br>";
 		
 		echo 'Batch sizes:'.print_r($range, 1).'<br />
 		Quantity required: '.$n.'<br /><br />
@@ -86,11 +85,6 @@ class WidgetController extends Controller
 	
 	private function callAPI($data){
 		$data_json = json_encode($data);
-		
-//echo "<pre>", print_r($data_json, 1), "</pre>";
-//exit;
-		
-		
 		$url       = "https://nearestnow.com/widgetapi";
 		$ch        = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -114,15 +108,8 @@ class WidgetController extends Controller
     {	// extract quantity and batch sizes from request
 		// calculate quantities of each batch size
 
-//echo "<pre>", print_r($request->data), "</pre>";
-//echo json_encode($request->range);	
-//echo json_encode($request->n);	
-//exit;
-
-
 		$range  = json_decode($request->range);
 		$n      = $request->n;	
-
 
 		$result = $this->calculator($n, $range);
 		echo json_encode($result);				
