@@ -26,8 +26,7 @@ class WidgetController extends Controller
 	*/
 	public function index(Request $request)
     {	
-		// specify batch sizes widgets will be sold in
-		// and total number of widgets purchased
+		// specify widget batch sizes and total number purchased
 		$range = array(5000, 2000, 1000, 500, 250);		
 		$n     = 12345678912;
 		
@@ -71,6 +70,48 @@ class WidgetController extends Controller
 		$this->readme();
 		return;
 	}
+		
+	/**
+	* Calculates the minimum amount of batches to fullfill an order
+	*
+	* @param  int  $n, array $range
+	* @return quantities of each batch to fullfill request
+	*/
+    public function widgetapi(Request $request)
+    {	// extract quantity and batch sizes from request
+		// calculate quantities of each batch size
+		$range  = $request->range;
+		$n      = $request->n;		
+		$result = $this->calculator($n, $range);
+		echo json_encode($result);				
+    }
+	
+	private function calculator($n, $range){
+		$result = array();
+		rsort($range);
+		foreach ($range as $value) {
+			$quantity       = floor($n/$value);
+			$result[$value] = $quantity;
+			$n              = $n - $quantity*$value;
+			$previousValue  = $value;
+		}
+		
+		// fullfill remainder with one larger batch or two smaller batches
+		if($n > 0){
+			if(($value * 2) >= $previousValue && $n <= $previousValue){
+				# if two smaller batches are larger or equal to one large batch
+				# and sufficient widgets in one larage batch
+				
+				$result[$previousValue] = $result["$previousValue"] + 1;
+				$result[$value]         = 0;
+			}else{
+				# two smaller batches are less than one big batch
+				# or one big batch doesn't have enough widgets
+				$result[$value] = $result[$value] + 1;
+			}
+		}
+		return $result;
+	}
 	
 	private function readme(){
 		echo "<br />#################################################</br>
@@ -93,34 +134,5 @@ class WidgetController extends Controller
 		Additional security could be provided creating a signed payload and comparing hashed payload and secret<br />
 		i.e. 'hash_hmac('sha256', \$payload, \$secret, \$raw = true)'<br /><br />		
 		";
-	}
-	
-	/**
-	* Calculates the minimum amount of batches to fullfill an order
-	*
-	* @param  int  $n, array $range
-	* @return quantities of each batch to fullfill request
-	*/
-    public function widgetapi(Request $request)
-    {	// extract quantity and batch sizes from request
-		// calculate quantities of each batch size
-		$range  = $request->range;
-		$n      = $request->n;		
-		$result = $this->calculator($n, $range);
-		echo json_encode($result);				
-    }
-	
-	private function calculator($n, $range){
-		$result = array();
-		rsort($range);
-		foreach ($range as $value) {
-			$quantity       = floor($n/$value);
-			$result[$value] = $quantity;
-			$n              = $n - $quantity*$value;			
-		}
-		if($n > 0){
-			$result["$value"] = $result["$value"] + 1;
-		}
-		return $result;
 	}
 }
