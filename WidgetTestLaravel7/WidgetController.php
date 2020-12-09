@@ -28,10 +28,63 @@ class WidgetController extends Controller
     {	
 		// specify widget batch sizes and total number purchased
 		$range = array(5000, 2000, 1000, 500, 250);		
-		$n     = 12345678912;
-		
+
 		// call api to determine minimum amount of batches to fullfill order
-		$data      = array('range' => $range, 'n' => $n);
+		#----------------------------------------
+		$n        = 1;
+		$data     = array('range' => $range, 'n' => $n);
+		$response = $this->callAPI($data);
+		$this->showResult($response, $range, $n);
+		#----------------------------------------
+		$n        = 250;
+		$data     = array('range' => $range, 'n' => $n);
+		$response = $this->callAPI($data);
+		$this->showResult($response, $range, $n);		
+		#----------------------------------------
+		$n        = 251;
+		$data     = array('range' => $range, 'n' => $n);
+		$response = $this->callAPI($data);
+		$this->showResult($response, $range, $n);		
+		#----------------------------------------
+		$n        = 501;
+		$data     = array('range' => $range, 'n' => $n);
+		$response = $this->callAPI($data);
+		$this->showResult($response, $range, $n);
+		#----------------------------------------
+		$n        = 12001;
+		$data     = array('range' => $range, 'n' => $n);
+		$response = $this->callAPI($data);
+		$this->showResult($response, $range, $n);
+		#----------------------------------------
+		$this->readme();
+		return;
+	}
+	
+	private function showResult($response, $range, $n){
+		echo "<br />#################################################</br>
+		# UNIT TESTING AGAINST VALID OUTCOME<br /></br>";
+		
+		echo 'Batch sizes:'.print_r($range, 1).'<br />
+		Quantity required: '.$n.'<br /><br />
+		Quantities of each batch required:<br /><br />';		
+		foreach($response as $key => $value){
+			echo 'Batch size: '.$key.', quantity: '.$value.'<br />';
+		}
+		
+		$i     = 0; // just to prevent unnecessary '+'
+		$total = 0;
+		
+		echo '<br />Check the total:<br />';
+		foreach($response as $key => $value){
+			if($i > 0)echo ' + ';
+			echo $key.'*'.$value;
+			$i++;
+			$total = $total + $key*$value;
+		}		
+		echo ' = '.$total.'<br />';
+	}	
+	
+	private function callAPI($data){
 		$data_json = json_encode($data);
 		$url       = "https://nearestnow.com/widgetapi";
 		$ch        = curl_init();
@@ -43,33 +96,8 @@ class WidgetController extends Controller
 		$response = curl_exec($ch);
 		$response = json_decode($response);
 		curl_close($ch);
-		
-		//---------------------------------------------
-		// Present the data to the user
-		
-		echo 'Batch sizes:'.print_r($range, 1).'<br />
-		Quantity required: '.$n.'<br /><br />
-		Quantities of each batch required:<br /><br />';
-		
-		foreach($response as $key => $value){
-			echo 'Batch size: '.$key.', quantity: '.$value.'<br />';
-		}
-		
-		$i     = 0;
-		$total = 0;
-		
-		echo '<br />Check the total:<br />';
-		foreach($response as $key => $value){
-			if($i > 0)echo ' + ';
-			echo $key.'*'.$value;
-			$i++;
-			$total = $total + $key*$value;
-		}		
-		echo ' = '.$total.'<br />';
-		
-		$this->readme();
-		return;
-	}
+		return $response;
+	}	
 		
 	/**
 	* Calculates the minimum amount of batches to fullfill an order
@@ -80,8 +108,10 @@ class WidgetController extends Controller
     public function widgetapi(Request $request)
     {	// extract quantity and batch sizes from request
 		// calculate quantities of each batch size
+
 		$range  = $request->range;
-		$n      = $request->n;		
+		$n      = $request->n;	
+
 		$result = $this->calculator($n, $range);
 		echo json_encode($result);				
     }
@@ -93,20 +123,26 @@ class WidgetController extends Controller
 			$quantity       = floor($n/$value);
 			$result[$value] = $quantity;
 			$n              = $n - $quantity*$value;
-			$previousValue  = $value;
 		}
-		
+
 		// fullfill remainder with one larger batch or two smaller batches
-		if($n > 0){
-			if(($value * 2) >= $previousValue && $n <= $previousValue){
-				# if two smaller batches are larger or equal to one large batch
-				# and sufficient widgets in one larage batch
-				
-				$result[$previousValue] = $result["$previousValue"] + 1;
+		$value         = $range[count($range)-1];
+		$previousValue = $range[count($range)-2];
+		
+		if($n > 0){	
+			// if quantity of smallest batch is 1
+			// and need to order another batch to fullfill remainder
+			// and two small batches greater than or equal to 1 bigger batch
+			// and 1 small batch plus remainder is <= 1 bigger batch
+			// just order 1 bigger batch
+			if ($result[$value] == 1 
+			&& $value*2 >= $previousValue
+			&& $value + $n <= $previousValue
+			){
+				$result[$previousValue] = $result[$previousValue] + 1;
 				$result[$value]         = 0;
 			}else{
-				# two smaller batches are less than one big batch
-				# or one big batch doesn't have enough widgets
+				# order another small batch
 				$result[$value] = $result[$value] + 1;
 			}
 		}
@@ -126,7 +162,8 @@ class WidgetController extends Controller
 		To host this in Laravel create a route exception in VerifyCsrfToken.php to enable curl to post.<br /><br />
 
 		# ROUTES<br />
-		Route::post('widgetapi',  'WidgetController@widgetapi');<br />
+		Route::get('widgetapi',  'WidgetController@widgetapi');<br />
+		Route::post('widgetapi',  'WidgetController@widgetapi');<br />		
 		Route::get('widgettest',  'WidgetController@index');<br />
 		Route::post('widgettest', 'WidgetController@index');<br /><br />
 		

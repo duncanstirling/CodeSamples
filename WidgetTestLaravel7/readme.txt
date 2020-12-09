@@ -1,5 +1,8 @@
 # READ ME
 
+# VIEW WORKING EXAMPLE
+https://nearestnow.com/widgettest
+
 # WIDGET BATCH SIZE CALCULATOR API	
 This test is hosted at https://nearestnow.com/widgettest 		
 This is a programming test to calculate the minimum number of orders to fullfill 
