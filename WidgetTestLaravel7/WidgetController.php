@@ -32,27 +32,27 @@ class WidgetController extends Controller
 		// call api to determine minimum amount of batches to fullfill order
 		#----------------------------------------
 		$n        = 1;
-		$data     = array('range' => $range, 'n' => $n);
+		$data     = array('range' => json_encode($range), 'n' => $n);
 		$response = $this->callAPI($data);
 		$this->showResult($response, $range, $n);
 		#----------------------------------------
 		$n        = 250;
-		$data     = array('range' => $range, 'n' => $n);
+		$data     = array('range' => json_encode($range), 'n' => $n);
 		$response = $this->callAPI($data);
 		$this->showResult($response, $range, $n);		
 		#----------------------------------------
 		$n        = 251;
-		$data     = array('range' => $range, 'n' => $n);
+		$data     = array('range' => json_encode($range), 'n' => $n);
 		$response = $this->callAPI($data);
 		$this->showResult($response, $range, $n);		
 		#----------------------------------------
 		$n        = 501;
-		$data     = array('range' => $range, 'n' => $n);
+		$data     = array('range' => json_encode($range), 'n' => $n);
 		$response = $this->callAPI($data);
 		$this->showResult($response, $range, $n);
 		#----------------------------------------
 		$n        = 12001;
-		$data     = array('range' => $range, 'n' => $n);
+		$data     = array('range' => json_encode($range), 'n' => $n);
 		$response = $this->callAPI($data);
 		$this->showResult($response, $range, $n);
 		#----------------------------------------
@@ -86,6 +86,11 @@ class WidgetController extends Controller
 	
 	private function callAPI($data){
 		$data_json = json_encode($data);
+		
+//echo "<pre>", print_r($data_json, 1), "</pre>";
+//exit;
+		
+		
 		$url       = "https://nearestnow.com/widgetapi";
 		$ch        = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -109,8 +114,15 @@ class WidgetController extends Controller
     {	// extract quantity and batch sizes from request
 		// calculate quantities of each batch size
 
-		$range  = $request->range;
+//echo "<pre>", print_r($request->data), "</pre>";
+//echo json_encode($request->range);	
+//echo json_encode($request->n);	
+//exit;
+
+
+		$range  = json_decode($request->range);
 		$n      = $request->n;	
+
 
 		$result = $this->calculator($n, $range);
 		echo json_encode($result);				
@@ -154,16 +166,22 @@ class WidgetController extends Controller
 		# READ ME<br /></br>
 		
 		# WIDGET BATCH SIZE CALCULATOR<br />	
-		This test is hosted at https://nearestnow.com/widgettest<br />		
-		This is a programming test to calculate the minimum number of orders to fullfill 
-		a batch.<br /><br />
+		This is an API that calculates the minimum number of orders to fullfill a batch<br /><br />
+		
+		# API AVAILABLE VIA POST OR GET<br /><br />
+		GET - BROWSER ACCESS<br />
+		https://nearestnow.com/widgetapi/[5000,2000,1000,500,250]/12001
+		<br /><br />
+		
+		POST EXAMPLE<br />
+		https://nearestnow.com/widgettest<br /><br />
 
 		# CSRF<br />
 		To host this in Laravel create a route exception in VerifyCsrfToken.php to enable curl to post.<br /><br />
 
 		# ROUTES<br />
-		Route::get('widgetapi',  'WidgetController@widgetapi');<br />
-		Route::post('widgetapi',  'WidgetController@widgetapi');<br />		
+		Route::get('widgetapi/{range}/{n}',   'WidgetController@widgetapi');<br />
+		Route::post('widgetapi',  'WidgetController@widgetapi');<br />
 		Route::get('widgettest',  'WidgetController@index');<br />
 		Route::post('widgettest', 'WidgetController@index');<br /><br />
 		
