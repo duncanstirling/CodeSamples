@@ -61,11 +61,11 @@ class WidgetController extends Controller
 	}
 	
 	private function showResult($response, $range, $n){
-		echo "</br># UNIT TESTING AGAINST VALID OUTCOME<br /></br>";
+		echo "TESTING THE BATCH QUANTITY CALCULATOR<br /><br />";
 		
 		echo 'Batch sizes:'.print_r($range, 1).'<br />
 		Quantity required: '.$n.'<br /><br />
-		Quantities of each batch required:<br /><br />';		
+		Quantities of each batch required:<br />';		
 		foreach($response as $key => $value){
 			echo 'Batch size: '.$key.', quantity: '.$value.'<br />';
 		}
@@ -149,32 +149,8 @@ class WidgetController extends Controller
 	}
 	
 	private function readme(){
-		echo "<br />#################################################</br>
-		# READ ME<br /></br>
-		
-		# WIDGET BATCH SIZE CALCULATOR<br />	
-		This is an API that calculates the minimum number of orders to fullfill a batch<br /><br />
-		
-		# API AVAILABLE VIA POST OR GET<br /><br />
-		GET - BROWSER ACCESS<br />
-		https://nearestnow.com/widgetapi/[5000,2000,1000,500,250]/12001
-		<br /><br />
-		
-		POST EXAMPLE<br />
-		https://nearestnow.com/widgettest<br /><br />
-
-		# CSRF<br />
-		To host this in Laravel create a route exception in VerifyCsrfToken.php to enable curl to post.<br /><br />
-
-		# ROUTES<br />
-		Route::get('widgetapi/{range}/{n}',   'WidgetController@widgetapi');<br />
-		Route::post('widgetapi',  'WidgetController@widgetapi');<br />
-		Route::get('widgettest',  'WidgetController@index');<br />
-		Route::post('widgettest', 'WidgetController@index');<br /><br />
-		
-		# FURTHER WORK<br />
-		Additional security could be provided creating a signed payload and comparing hashed payload and secret<br />
-		i.e. 'hash_hmac('sha256', \$payload, \$secret, \$raw = true)'<br /><br />		
-		";
+		$fh = fopen("https://raw.githubusercontent.com/duncanstirling/CodeSamples/master/WidgetTestLaravel7/readme.txt", 'r');
+		$pageText = fread($fh, 250000);
+		echo nl2br($pageText);
 	}
 }
