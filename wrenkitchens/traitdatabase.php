@@ -1,10 +1,10 @@
 <?php
 trait TraitDatabase
 {
-    private $username = 'shirefreauvista';
-    private $password = 'Surrey1975';
+    private $username = '';
+    private $password = '';
     private $hostname = '127.0.0.1';
-	private $dbname   = 'wrentest';
+	private $dbname   = '';
 	
 	public $mysqli;
 
