@@ -1,0 +1,1 @@
+ALTER TABLE `tblproductdata` DROP COLUMN strProductCode;
