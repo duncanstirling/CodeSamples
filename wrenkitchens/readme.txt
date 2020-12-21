@@ -20,7 +20,7 @@ ALTER TABLE `tblproductdata` ADD `stock` SMALLINT NULL AFTER `strProductCode`, A
 See tableAlterations.sql
 
 # Unit testing
-phpunit remoteConnectionTest.php
+phpunit unitTests.php
 
 
 

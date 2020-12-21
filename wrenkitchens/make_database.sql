@@ -10,7 +10,7 @@ USE wrenTest;
 
 -- Create table for data
 
-CREATE TABLE tblWrenProductData (
+CREATE TABLE tblProductData (
   intProductDataId int(10) unsigned NOT NULL AUTO_INCREMENT,
   strProductName varchar(50) NOT NULL,
   strProductDesc varchar(255) NOT NULL,
