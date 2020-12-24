@@ -3,11 +3,10 @@ namespace ProgrammingTest;
 
 trait traitdatabase
 {
-    private $username = '';
-    private $password = '';
-    private $hostname = '127.0.0.1';
+	private $username = '';
+	private $password = '';
+	private $hostname = '127.0.0.1';
 	private $dbname   = 'wrentest';
-
 
    /**
     * Constructor
