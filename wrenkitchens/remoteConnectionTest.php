@@ -1,11 +1,9 @@
 <?php
-namespace ProgrammingTest;
 
+// https://www.sitepoint.com/tutorial-introduction-to-unit-testing-in-php-with-phpunit/
 require_once('csvparser.php');
 
-use ProgrammingTest as PT;
-
-class UnitTests extends \PHPUnit_Framework_TestCase
+class RemoteConnectTest extends PHPUnit_Framework_TestCase
 {
   public function setUp(){ }
   public function tearDown(){ }
@@ -13,7 +11,7 @@ class UnitTests extends \PHPUnit_Framework_TestCase
   public function testParsingIsValid()
   {	  
     // test to ensure that I can parse a file without returning an error
-    $connObj = new PT\CSVProcessor('stock.csv', 'production');
+    $connObj = new CSVProcessor('stock.csv', 'test');
 
 	// test 1
     $this->assertTrue($connObj->validate() !== false);	
@@ -22,7 +20,7 @@ class UnitTests extends \PHPUnit_Framework_TestCase
   public function testSaveParsedDataIsValid()
   {	  
     // test to ensure that I can parse a file without returning an error
-    $connObj = new PT\CSVProcessor('stock.csv', 'test');
+    $connObj = new CSVProcessor('stock.csv', 'test');
 
 	// test 2
 	$connObj->queries = 

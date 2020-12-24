@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once(__DIR__ . '/csvparser.php');
+use ProgrammingTest as PT;
 
 //====================================================
 //           PROCESS CSV FILE AND IMPORT TO DB
@@ -13,8 +14,8 @@ require_once(__DIR__ . '/csvparser.php');
 $file       = isset($_SERVER["argv"][1]) ? $_SERVER["argv"][1] : "stock.csv";
 $testOrProd = isset($_SERVER["argv"][2]) ? $_SERVER["argv"][2] : "test";
 
-// process csv file
-$parser      = new CSVProcessor($file, $testOrProd);
+// process csv file with instance of CSVProcessor in ProgrammingTest namespace
+$parser      = new PT\CSVProcessor($file, $testOrProd);
 
 // parse file
 $parseResult = $parser->validate();
@@ -33,5 +34,5 @@ if($parseResult['type'] == 'success'){
 
 // save parsed data to db
 if ($testOrProd == 'production') {
-	$parser->saveFileData();
+	$parser->saveFileData($parser->pdo);
 }

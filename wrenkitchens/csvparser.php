@@ -1,4 +1,6 @@
 <?php
+namespace ProgrammingTest;
+
 require_once(__DIR__ . '/traitdatabase.php');
 require_once(__DIR__ . '/traitfileprocessor.php');
 
@@ -11,7 +13,7 @@ class CSVProcessor
 	{
 		$this->file       = $file;
 		$this->testOrProd = $testOrProd;
-		$this->mysqli     = $this->mysqliConnect();
+		$this->pdo     = $this->pdoConnect();
 	}
 	
 	protected function validateFile() : array {
@@ -148,24 +150,9 @@ class CSVProcessor
 	}
 
 	public function saveFileData(): bool{
-		$this->mysqli = $this->mysqliConnect();
-		$this->mysqli->begin_transaction();
-
-		// Execute multi query
-		if ($this->mysqli->multi_query($this->queries)) {
-		  do {
-			// Store first result set
-			if ($result = $this->mysqli->store_result()) {
-			  while ($row = $result->fetch_row()) {
-				printf("%s\n", $row[0]);
-			  }
-			 $result->free_result();
-			}
-			 //Prepare next result set
-		  } while ($this->mysqli->next_result());
-		}
-		$this->mysqli->commit();
-		$this->mysqli->close();
+		$pdo       = $this->pdoConnect();
+		$statement = $pdo->prepare($this->queries);
+		$statement->execute();
 		return true;
 	}
 }

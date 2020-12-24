@@ -1,11 +1,13 @@
-# READ ME
+############################################# 
+#                  READ ME
+#############################################
 
-# Instructions for processing CSV files and entering into a database
+# This code sample is a OO PHP programming test to processing CSV files and entering them into a database.
 
 # The script runs at the command line
 It can be run in a production or test format
-In test format it will proces the files and display the result/
-In production format it will also enter the result into the db
+In test format it will proces the files and display the result.
+In production format it will also enter the result into the database.
 You must also specify the name of the csv file
 
 # Test format
@@ -21,6 +23,5 @@ See tableAlterations.sql
 
 # Unit testing
 phpunit unitTests.php
-
 
 

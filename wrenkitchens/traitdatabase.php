@@ -1,33 +1,41 @@
 <?php
-trait TraitDatabase
+namespace ProgrammingTest;
+
+trait traitdatabase
 {
     private $username = '';
     private $password = '';
     private $hostname = '127.0.0.1';
-	private $dbname   = '';
-	
-	public $mysqli;
+	private $dbname   = 'wrentest';
 
    /**
     * Constructor
     */
 
    public function __construct(){
+
    }
 
    /**
     * Get Database connection
     * 
-    * @return Mysqli
+    * @return PDO connection
     */
 	
-    public function mysqliConnect() {		
-		$mysqli = new mysqli($this->hostname, $this->username, $this->password, $this->dbname);
-		if ($mysqli->connect_errno) {
-		  echo "Failed to connect to database: " . $mysqli -> connect_error;
-		  exit();
+    public function pdoConnect() {		
+		//'\' the beginning backslash means php will look for the pdo class in the global namespace
+		$dsn      = 'mysql:dbname='.$this->dbname.';host='.$this->hostname;
+		$user     = $this->username;
+		$password = $this->password;
+
+		try {
+			$pdo = new \PDO($dsn, $user, $password);
+			$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			return $pdo;
+		} catch (\PDOException $e) {
+			echo 'Connection failed: ' . $e->getMessage();
+			exit;
 		}		
-		return $mysqli; 		
     }	
 }
 ?>

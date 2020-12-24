@@ -1,4 +1,6 @@
 <?php
+namespace ProgrammingTest;
+
 trait TraitFileProcessor {	
 	protected $file;
 	public $queries; // public to enable unit testing
