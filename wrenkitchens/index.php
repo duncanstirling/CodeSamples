@@ -11,8 +11,8 @@ use ProgrammingTest as PT;
 // ALTER TABLE `tblproductdata` ADD `stock` SMALLINT NULL AFTER `strProductCode`, ADD `costGB` DECIMAL(10,2) NULL AFTER `stock`;
 
 // parameters passed at command line
-$file       = isset($_SERVER["argv"][1]) ? $_SERVER["argv"][1] : "stock.csv";
-$testOrProd = isset($_SERVER["argv"][2]) ? $_SERVER["argv"][2] : "test";
+$file       = $_SERVER["argv"][1] ?? "stock.csv";
+$testOrProd = $_SERVER["argv"][2] ?? "test";
 
 // process csv file with instance of CSVProcessor in ProgrammingTest namespace
 $parser      = new PT\CSVProcessor($file, $testOrProd);
