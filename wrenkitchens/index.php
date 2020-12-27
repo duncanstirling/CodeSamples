@@ -34,5 +34,5 @@ if($parseResult['type'] == 'success'){
 
 // save parsed data to db
 if ($testOrProd == 'production') {
-	$parser->saveFileData($parser->pdo);
+	$parser->saveFileData();
 }

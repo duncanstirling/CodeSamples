@@ -13,7 +13,6 @@ class CSVProcessor
 	{
 		$this->file       = $file;
 		$this->testOrProd = $testOrProd;
-		$this->pdo     = $this->pdoConnect();
 	}
 	
 	protected function validateFile() : array {
@@ -150,8 +149,8 @@ class CSVProcessor
 	}
 
 	public function saveFileData(): bool{
-		$pdo       = $this->pdoConnect();
-		$statement = $pdo->prepare($this->queries);
+		$db        = $this->pdoConnect();
+		$statement = $db->prepare($this->queries);
 		$statement->execute();
 		return true;
 	}
