@@ -7,7 +7,7 @@ trait traitdatabase
     private $password = '';
     private $hostname = '127.0.0.1';
 	private $dbname   = 'wrentest';
-
+	private $db;
    /**
     * Constructor
     */
@@ -19,22 +19,27 @@ trait traitdatabase
    /**
     * Get Database connection
     * 
-    * @return PDO connection
+    * @return db connection
     */
 	
-    public function pdoConnect() {		
-		//'\' the beginning backslash means php will look for the pdo class in the global namespace
-		$dsn      = 'mysql:dbname='.$this->dbname.';host='.$this->hostname;
-		$user     = $this->username;
-		$password = $this->password;
+    public function pdoConnect() {	
+		
+		if( isset($this->db) ) {
+			return $this->db;
+		} else {		
+			//'\' the beginning backslash means php will look for the pdo class in the global namespace
+			$dsn      = 'mysql:dbname='.$this->dbname.';host='.$this->hostname;
+			$user     = $this->username;
+			$password = $this->password;
 
-		try {
-			$pdo = new \PDO($dsn, $user, $password);
-			$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-			return $pdo;
-		} catch (\PDOException $e) {
-			echo 'Connection failed: ' . $e->getMessage();
-			exit;
+			try {
+				$this->db = new \PDO($dsn, $user, $password);
+				$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+				return $this->db;
+			} catch (\PDOException $e) {
+				echo 'Connection failed: ' . $e->getMessage();
+				exit;
+			}	
 		}		
     }	
 }
