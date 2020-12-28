@@ -8,6 +8,8 @@ trait traitdatabase
     private $hostname = '127.0.0.1';
 	private $dbname   = 'wrentest';
 	private $db;
+	public  $queries;
+	
    /**
     * Constructor
     */

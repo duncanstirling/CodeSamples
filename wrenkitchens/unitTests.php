@@ -1,32 +1,36 @@
 <?php
 namespace ProgrammingTest;
 
-require_once('csvparser.php');
+require_once ('csvparser.php');
+require_once ('queries.php');
 
 use ProgrammingTest as PT;
 
 class UnitTests extends \PHPUnit_Framework_TestCase
 {
-  public function setUp(){ }
-  public function tearDown(){ }
+    public function setUp()
+    {
+    }
+	
+    public function tearDown()
+    {
+    }
 
-  public function testParsingIsValid()
-  {	  
-    // test to ensure that I can parse a file without returning an error
-    $connObj = new PT\CSVProcessor('stock.csv', 'production');
+    public function testParsingIsValid()
+    {
+        // test to ensure that I can parse a file without returning an error
+        $connObj = new CSVProcessor('stock.csv', 'production');
+        $this->assertTrue($connObj->validate() !== false);
+    }
 
-	// test 1
-    $this->assertTrue($connObj->validate() !== false);	
-  }
-  
-  public function testSaveParsedDataIsValid()
-  {	  
-    // test to ensure that I can parse a file without returning an error
-    $connObj = new PT\CSVProcessor('stock.csv', 'test');
+    public function testSaveParsedDataIsValid()
+    {
+        // test to ensure I can run a query to store csv file data in the db
+        $connObj = new CSVProcessor('stock.csv', 'test');
 
-	// test 2
-	$connObj->queries = 
-"INSERT INTO `tblproductdata`(`strProductName`, `strProductDesc`, `strProductCode`, `stock`, `costGB`, `dtmAdded`, `dtmDiscontinued`)
+        // mock the query to be run
+        $queriesObj = new Queries();
+        $queriesObj->queries = "INSERT INTO `tblproductdata`(`strProductName`, `strProductDesc`, `strProductCode`, `stock`, `costGB`, `dtmAdded`, `dtmDiscontinued`)
                 VALUES ('TV', '32” Tv', 'P0001', '10', '399.99', NOW(), '');
 INSERT INTO `tblproductdata`(`strProductName`, `strProductDesc`, `strProductCode`, `stock`, `costGB`, `dtmAdded`, `dtmDiscontinued`)
                 VALUES ('Cd Player', 'Nice CD player', 'P0002', '11', '50.12', NOW(), 'NOW()');
@@ -71,8 +75,10 @@ INSERT INTO `tblproductdata`(`strProductName`, `strProductDesc`, `strProductCode
 INSERT INTO `tblproductdata`(`strProductName`, `strProductDesc`, `strProductCode`, `stock`, `costGB`, `dtmAdded`, `dtmDiscontinued`)
                 VALUES ('TV', 'Great for television', 'P0025', '21', '40', NOW(), '');
 INSERT INTO `tblproductdata`(`strProductName`, `strProductDesc`, `strProductCode`, `stock`, `costGB`, `dtmAdded`, `dtmDiscontinued`)
-                VALUES ('Cd Player', 'A personal favourite', 'P0026', '0', '34.55', NOW(), '');";
-    $this->assertTrue($connObj->saveFileData() !== false);	
-  }
+                VALUES ('Cd Player', 'A personal favourite', 'P0026', '0', '34.55', NOW(), '')";
+
+        // test running the query does not return false
+        $this->assertTrue($connObj->saveFileData($queriesObj) !== false);
+    }
 }
 ?>
