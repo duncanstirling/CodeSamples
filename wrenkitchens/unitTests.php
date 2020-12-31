@@ -78,7 +78,7 @@ INSERT INTO `tblproductdata`(`strProductName`, `strProductDesc`, `strProductCode
                 VALUES ('Cd Player', 'A personal favourite', 'P0026', '0', '34.55', NOW(), '')";
 
         // test running the query does not return false
-        $this->assertTrue($connObj->saveFileData($queriesObj) !== false);
+        $this->assertTrue($connObj->saveFileData(Queries $queriesObj) !== false);
     }
 }
 ?>

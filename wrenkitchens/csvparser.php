@@ -11,7 +11,7 @@ class CSVProcessor
     // use traits, assumes PHP7
     use TraitFileProcessor, TraitDatabase;
 
-    public function __construct($file, $testOrProd){
+    public function __construct(string $file, string $testOrProd){
         $this->file = $file;
         $this->testOrProd = $testOrProd;
     }
