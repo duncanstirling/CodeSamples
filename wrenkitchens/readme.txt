@@ -4,7 +4,9 @@
 
 # This OO PHP code sample processes a CSV file and enters it into a database.
 
-# This code sample displays the following: typed properties and type hinting, function return type declarations, replacing the ternary operator with the null coalescing operator, traits, unit testing with PHPUnit and PDO for flexible database configuration because it supports a range of drivers.
+# This code sample displays the following: typed properties and type hinting, function return type
+declarations, replacing the ternary operator with the null coalescing operator, traits, unit testing 
+with PHPUnit and PDO for flexible database configuration because it supports a range of drivers.
 
 # The script runs at the command line
 It can be run in a production or test format
