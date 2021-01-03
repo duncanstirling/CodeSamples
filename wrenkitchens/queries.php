@@ -3,37 +3,34 @@ namespace ProgrammingTest;
 
 trait TraitCsv
 {
-    // each query
-    public $strProductName;
-    public $strProductDesc;
-    public $strProductCode;
-    public $stock;
-    public $costGB;
-    public $dtmDiscontinued;
+// each query
+	public $strProductName;
+	public $strProductDesc;
+	public $strProductCode;
+	public $stock;
+	public $costGB;
+	public $dtmDiscontinued;
 
-    // total result or file processing
-    public $queries;
-    public $type;
-    public $message;
-    public $lineCount;
-    public $rejected;
+// total result or file processing
+	public $queries;
+	public $type;
+	public $message;
+	public $lineCount;
+	public $rejected;
 
-    /**
-     * Constructor
-     */
+	/**
+* Constructor
+*/
 
-    public function __construct()
-    {
-    }
+					public function __construct() {}
 }
 
-class Queries
+class Query
 {
-    // use traits, assumes PHP7
-    use TraitCsv;
+// use traits, assumes PHP7
+	use TraitCsv;
 
-    public function __construct()
-    {
-    }
+	public function __construct() {}
 }
+
 ?>
