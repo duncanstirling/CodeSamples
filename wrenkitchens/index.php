@@ -22,14 +22,13 @@ $parseResult = $parser->validate();
 
 if ($parseResult->type == 'success') {
 // print csv file parsing result
-	echo "\n1. Total Number of Queries:";
-	echo "<pre>", print_r($parseResult->lineCount, true), "</pre>\n";
-	echo "\n2. Queries:\n";
-	echo "<pre>", print_r($parseResult->queries, true), "</pre>\n";
-	echo "\n3. Queries Rejected:\n";
-	echo "<pre>", print_r($parseResult->rejected, true), "</pre>\n";
+	echo 'Total Number of Queries:' . $parseResult->lineCount . PHP_EOL;
+	echo 'Queries:' . PHP_EOL;
+	echo $parseResult->queries . PHP_EOL;
+	echo 'Queries Rejected:' . PHP_EOL;
+	echo print_r($parseResult->rejected, true);
 } else {
-	echo "Error: <pre>", print_r($parseResult->message, true), "</pre>";
+	echo "Error:" . $parseResult->message;
 	exit;
 }
 
