@@ -1,15 +1,15 @@
 <?php
 namespace ProgrammingTest;
 
-require_once (__DIR__ . '/traitdatabase.php');
+#require_once (__DIR__ . '/traitdatabase.php');
 require_once (__DIR__ . '/traitfileprocessor.php');
-require_once (__DIR__ . '/queries.php');
-use ProgrammingTest as PT;
+require_once (__DIR__ . '/query.php');
+use ProgrammingTest as PT; 
 
 class CSVProcessor
 {
 // use traits, assumes PHP7
-	use TraitFileProcessor, TraitDatabase;
+	use TraitFileProcessor;
 
 	public function __construct(string $file, string $testOrProd)
 	{
@@ -40,9 +40,10 @@ class CSVProcessor
 // Parse data from CSV file line by line
 		$this->queries = "";
 		$uniqueProductCodes = array();
-		$rejected = array();
-		$reason = '';
-		$queryData = new PT\Query();
+		$rejected           = array();
+		$reason             = '';
+		$query              = new PT\Query();
+		
 		while (($line = fgetcsv($csvFile)) !== false) {
 // validate line length
 			$arraySize = count($line);
@@ -102,15 +103,15 @@ class CSVProcessor
 			}
 
 // create multi query
-			$queryData->strProductName = $strProductName;
-			$queryData->strProductDesc = $strProductDesc;
-			$queryData->strProductCode = $strProductCode;
-			$queryData->stock = $stock;
-			$queryData->costGB = $costGB;
-			$queryData->dtmDiscontinued = $dtmDiscontinued;
+			$query->strProductName = $strProductName;
+			$query->strProductDesc = $strProductDesc;
+			$query->strProductCode = $strProductCode;
+			$query->stock = $stock;
+			$query->costGB = $costGB;
+			$query->dtmDiscontinued = $dtmDiscontinued;
 
 // build multi query
-			$queryData = $this->buildMultiQuery($queryData);
+			$query = $this->buildMultiQuery($query);
 
 			$uniqueProductCodes[] = $strProductCode;
 			$lineCount++;
@@ -119,10 +120,10 @@ class CSVProcessor
 // Close opened CSV file
 		fclose($csvFile);
 
-		$queryData->type = 'success';
-		$queryData->lineCount = $lineCount;
-		$queryData->rejected = $rejected;
-		return $queryData;
+		$query->type = 'success';
+		$query->lineCount = $lineCount;
+		$query->rejected = $rejected;
+		return $query;
 	}
 
 	protected function buildMultiQuery(Query $q)
@@ -137,7 +138,7 @@ class CSVProcessor
 
 	public function saveFileData(Query $q) : bool
 	{
-		return $this->query($q);
+		return $q->runQuery($q);
 	}
 }
 ?>

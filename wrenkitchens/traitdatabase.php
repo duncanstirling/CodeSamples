@@ -10,19 +10,19 @@ trait traitdatabase
 	private $db;
 	public  $queries;
 
-	/**
+/**
 * Constructor
 */
 
-					public function __construct() {}
+	public function __construct() {}
 
-	/**
+/**
 * Get Database connection
 * 
 * @return db connection
 */
 
-					public function pdoConnect()
+	public function pdoConnect()
 	{
 		if (isset($this->db)) {
 			return $this->db;
@@ -41,22 +41,6 @@ trait traitdatabase
 				exit;
 			}
 		}
-	}
-
-	public function query(Query $q)
-	{
-		try {
-			$db = $this->pdoConnect();
-			$statement = $db->prepare($q->queries);
-			$statement->execute();
-		} catch (Exception $e) {
-			echo 'Wren code error: ' . $e->getMessage();
-			error_log('Log Wren code error to system logger: ' . $e->getMessage(), 0);
-			error_log('Email Wren code error: ' . $e->getMessage(), 1, "dgstirling@yahoo.co.uk");
-			return false;
-		}
-
-		return true;
 	}
 }
 

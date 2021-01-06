@@ -2,7 +2,7 @@
 namespace ProgrammingTest;
 
 require_once ('csvparser.php');
-require_once ('queries.php');
+require_once ('query.php');
 
 use ProgrammingTest as PT;
 
