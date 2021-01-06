@@ -1,10 +1,11 @@
 <?php
-namespace ProgrammingTest;
+namespace wrenkitchens;
 
-require_once ('csvparser.php');
-require_once ('query.php');
+spl_autoload_register(function ($class_name) {
+    include('..\\'. $class_name . ".php");	
+});
 
-use ProgrammingTest as PT;
+use wrenkitchens as WK;
 
 class UnitTests extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +17,7 @@ class UnitTests extends \PHPUnit_Framework_TestCase
 	{
 // test to ensure that I can parse a file without returning an error
 		$connObj = new CSVProcessor('stock.csv', 'production');
-		$this->assertTrue($connObj->validate() !== false);
+		$this->assertTrue($connObj->validateFileContent() !== false);
 	}
 
 	public function testSaveParsedDataIsValid()

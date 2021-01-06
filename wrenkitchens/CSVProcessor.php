@@ -1,20 +1,16 @@
 <?php
-namespace ProgrammingTest;
-
-#require_once (__DIR__ . '/traitdatabase.php');
+namespace wrenkitchens;
 
 spl_autoload_register(function ($class_name) {
-    include $class_name . '.php';
+    include('..\\'. $class_name . ".php");	
 });
 
-//require_once (__DIR__ . '/traitfileprocessor.php');
-//require_once (__DIR__ . '/query.php');
-use ProgrammingTest as PT; 
+use wrenkitchens as WK; 
 
 class CSVProcessor
 {
 // use traits, assumes PHP7
-	use TraitFileProcessor;
+//	use TraitFileProcessor;
 
 	public function __construct(string $file, string $testOrProd)
 	{
@@ -33,7 +29,7 @@ class CSVProcessor
 		return (object)['type' => 'success'];
 	}
 
-	protected function validateFileContent() : object
+	public function validateFileContent() : object
 	{
 // Open CSV file with read-only mode
 		$csvFile = fopen("$this->file", 'r');
@@ -47,7 +43,7 @@ class CSVProcessor
 		$uniqueProductCodes = array();
 		$rejected           = array();
 		$reason             = '';
-		$query              = new PT\Query();
+		$query              = new WK\Query();
 		
 		while (($line = fgetcsv($csvFile)) !== false) {
 // validate line length

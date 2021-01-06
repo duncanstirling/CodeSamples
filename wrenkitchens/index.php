@@ -1,7 +1,8 @@
 <?php
 declare (strict_types = 1);
-require_once (__DIR__ . '/csvparser.php');
-use ProgrammingTest as PT;
+require_once (__DIR__ . '/CSVProcessor.php');
+
+use wrenkitchens as WK;
 
 //====================================================
 //           PROCESS CSV FILE AND IMPORT TO DB
@@ -14,11 +15,11 @@ use ProgrammingTest as PT;
 $file = $_SERVER["argv"][1] ?? "stock.csv";
 $testOrProd = $_SERVER["argv"][2] ?? "test";
 
-// process csv file with instance of CSVProcessor in ProgrammingTest namespace
-$parser = new PT\CSVProcessor($file, $testOrProd);
+// process csv file with instance of CSVProcessor in wrenkitchens namespace
+$parser = new WK\CSVProcessor($file, $testOrProd);
 
 // parse file
-$parseResult = $parser->validate();
+$parseResult = $parser->validateFileContent();
 
 if ($parseResult->type == 'success') {
 // print csv file parsing result

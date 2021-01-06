@@ -1,7 +1,7 @@
 <?php
-namespace ProgrammingTest;
+namespace wrenkitchens;
 
-trait traitdatabase
+trait TraitDatabase
 {
 	private $username = '';
 	private $password = '';

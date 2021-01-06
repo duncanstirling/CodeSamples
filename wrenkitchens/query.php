@@ -1,6 +1,9 @@
 <?php
-namespace ProgrammingTest;
-require_once (__DIR__ . '/traitdatabase.php');
+namespace wrenkitchens;
+
+spl_autoload_register(function ($class_name) {
+    include('..\\'. $class_name . ".php");	
+});
 
 class Query
 {
