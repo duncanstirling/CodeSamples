@@ -1,6 +1,9 @@
 <?php
 declare (strict_types = 1);
-require_once (__DIR__ . '/CSVProcessor.php');
+
+spl_autoload_register(function ($class_name) {
+    include('..\\'. $class_name . ".php");	
+});
 
 use wrenkitchens as WK;
 
