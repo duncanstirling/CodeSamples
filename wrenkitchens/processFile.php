@@ -25,7 +25,7 @@ abstract class processFile {
 	
 	public function saveFileData(Query $q) : bool
 	{
-		return $q->runQuery($q);
+		return $q->runQuery(Query $q);
 	}	
 }
 
