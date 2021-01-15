@@ -1,14 +1,13 @@
 <?php
 namespace wrenkitchens;
 
-trait TraitDatabase
+class Database
 {
 	private $username = '';
 	private $password = '';
 	private $hostname = '127.0.0.1';
-	private $dbname   = 'wrentest';
+	private $dbname   = '';
 	private $db;
-	public  $queries;
 
 /**
 * Constructor

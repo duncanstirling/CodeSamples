@@ -5,10 +5,9 @@ spl_autoload_register(function ($class_name) {
     include('..\\'. $class_name . ".php");	
 });
 
-class Query
-{
-// use traits, assumes PHP7
-	use TraitDatabase;
+class Query {
+	
+	public  $queries;
 
 	public function __construct() {
 		
@@ -17,7 +16,8 @@ class Query
 	public function runQuery(Query $q)
 	{
 		try {
-			$db = $this->pdoConnect();
+			$db = new Database;
+			$db = $db->pdoConnect();
 			$statement = $db->prepare($q->queries);
 			$statement->execute();
 		} catch (Exception $e) {

@@ -1,10 +1,12 @@
 <?php
 namespace wrenkitchens;
 
-trait TraitFileProcessor
-{
+spl_autoload_register(function ($class_name) {
+    include('..\\'. $class_name . ".php");	
+});
+
+abstract class processFile {
 	protected $file;
-	public $queries; // public to enable unit testing
 	protected $testOrProd;
 
 	final public function validate() : object
@@ -16,12 +18,14 @@ trait TraitFileProcessor
 			return $validateFile;
 		}
 	}
-
-// child class must implement these functions
+    // child class must implement these functions
 	abstract protected function validateFile() : object;
 	abstract protected function validateFileContent() : object;
-	abstract public function saveFileData() : bool;
+
+	public function saveFileData(Query $q) : bool
+	{
+		return $q->runQuery($q);
+	}	
 }
 
 ?>
-

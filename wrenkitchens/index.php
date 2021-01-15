@@ -19,7 +19,7 @@ $file = $_SERVER["argv"][1] ?? "stock.csv";
 $testOrProd = $_SERVER["argv"][2] ?? "test";
 
 // process csv file with instance of CSVProcessor in wrenkitchens namespace
-$parser = new WK\CSVProcessor($file, $testOrProd);
+$parser = new WK\processCSVFile($file, $testOrProd);
 
 // parse file
 $parseResult = $parser->validateFileContent();
