@@ -3,7 +3,8 @@
 abstract class processFile {
     abstract function validateFile();
     abstract function validateFileContents();
-    abstract function saveToDatabase();
+    public function saveToDatabase(){
+	}	
 }
 -------------------------
 trait TraitCSV {
@@ -11,12 +12,7 @@ trait TraitCSV {
     }
     public function validateFileContents(){
 	}
-}
--------------------------
-trait TraitDatabase {
     public function createQuery(){
-	}
-    public function saveToDatabase(){
 	}
 }
 -------------------------
