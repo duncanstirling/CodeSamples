@@ -120,7 +120,7 @@ trait traitCSV {
 		return $query;
 	}
 
-	protected function buildMultiQuery(Query $q)
+	protected function buildMultiQuery(Query $q) : object
 	{
 		$query = "INSERT INTO `tblproductdata`(`strProductName`, `strProductDesc`, `strProductCode`, `stock`, `costGB`, `dtmAdded`, `dtmDiscontinued`) VALUES ('" . $q->strProductName . "', '" . $q->strProductDesc . "', '" . $q->strProductCode . "', '" . $q->stock . "', '" . $q->costGB . "', NOW(), '" . $q->dtmDiscontinued . "');\n";
 

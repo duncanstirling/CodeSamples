@@ -21,7 +21,8 @@ abstract class processFile {
     // child class must implement these functions
 	abstract protected function validateFile() : object;
 	abstract protected function validateFileContent() : object;
-
+	abstract protected function buildMultiQuery(Query $q) : object;
+	
 	public function saveFileData(Query $q) : bool
 	{
 		return $q->runQuery($q);

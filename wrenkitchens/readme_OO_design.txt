@@ -3,6 +3,7 @@
 abstract class processFile {
     abstract function validateFile();
     abstract function validateFileContents();
+	abstract function createQuery();
     public function saveToDatabase(){
 	}	
 }
@@ -17,7 +18,7 @@ trait TraitCSV {
 }
 -------------------------
 class processCsvFile extends processFile {
-    use TraitCSV, TraitDatabase;
+    use TraitCSV;
 }
 -------------------------
 #index.php
