@@ -19,7 +19,25 @@ class NncountriesTableSeeder extends Seeder
 		$data[] = [4, 'China', 'cn', 'Chinese'];
 		$data[] = [5, 'Czech R', 'cz', 'Czech'];
 		$data[] = [6, 'France', 'fr', 'French'];
-		// and many more countries...
+		$data[] = [7, 'Germany', 'de', 'Germany'];
+		$data[] = [8, 'Greece', 'gr', 'Greek'];
+		$data[] = [9, 'Holland', 'nl', 'Dutch'];
+		$data[] = [10, 'Hungary', 'hu', 'Hungarian'];
+		$data[] = [11, 'Indonesia', 'id', 'Indonesian'];
+		$data[] = [12, 'Italy', 'it', 'Italian'];
+		$data[] = [13, 'Japan', 'jp', 'Japanese'];
+		$data[] = [14, 'Latvia', 'lv', 'Latvian'];
+		$data[] = [15, 'New Zealand', 'nz', 'Kiwi'];
+		$data[] = [16, 'Poland', 'pl', 'Polish'];
+		$data[] = [17, 'Romania', 'ro', 'Romanian'];
+		$data[] = [18, 'Russia', 'ru', 'Russian'];
+		$data[] = [19, 'Spain', 'es', 'Spanish'];
+		$data[] = [20, 'Sweden', 'se', 'Swedish'];
+		$data[] = [21, 'Switzerland', 'ch', 'Swiss'];
+		$data[] = [22, 'Thailand', 'th', 'Thai'];
+		$data[] = [23, 'UK', 'gb', 'British'];
+		$data[] = [24, 'Ukraine', 'ua', 'Ukranian'];
+		$data[] = [25, 'USA', 'us', 'American'];
 
 		foreach ($data as $key => $row) {
 			
