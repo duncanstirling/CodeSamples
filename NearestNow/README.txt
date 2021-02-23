@@ -1,6 +1,6 @@
                         LARAVEL CODE SAMPLE FROM NEARESTNOW.COM 
 
-Please note nearestnow.com is a work in progress, it is not yet finished, it is very much at a prototype stage and it is currently not PSR compliant, 
+Please note nearestnow.com is a work in progress, it is not yet finished, it is at a prototype stage and it is currently not PSR compliant, 
 many modifications are planned, time permitting as my priority at the moment is to find a new job. If you would like to employ me as a full stack Laravel 
 developer, email me at dgstirling@yahoo.co.uk, see duncanstirling.com 
 
