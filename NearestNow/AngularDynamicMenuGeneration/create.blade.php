@@ -114,9 +114,7 @@ Create an Advert
    <?php 
       $UKCitiesJsonEncoded = json_encode((object)$UKCities);			
       $internationalJsonEncoded = json_encode((object)$internationalCities);
-      ?>
-   <!-- ==================== 3 ====================== -->
-   <?php 
+
       $searchtypesArr = array(); 
       ?>
    @foreach ($searchtypes as $type)	
