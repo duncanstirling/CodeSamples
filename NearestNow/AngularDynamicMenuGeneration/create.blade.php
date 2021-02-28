@@ -46,50 +46,48 @@ Create an Advert
          <select ng-model="selectedcountry" ng-options="v as k for (k , v) in international"></select>
       </div>
       <div ng-show="selectedcountry">
-         <h4>Select a city in %%selectedcountry.name%%</h4>
-         <select name="internationalCountryID" ng-model="selectLocation" ng-options="x for x in selectedcountry.values">
-         </select>    
+         <h4>Select a city in %%selectedcountry.countryName%%</h4>
+         <select name="internationalCountryID" ng-model="selectLocation" ng-options="k as v for (k , v) in selectedcountry.values">
+         </select>   
+         <input type="hidden" id="countryiD" name="countryID" value="%%selectedcountry.id%%">		   
       </div>
       <div ng-show="myVar == 'UK'">
          <h3>%%myVar%% locations</h3>
          <h4>Listing %%myVar%% locations</h4>
-         <select  name="UKCountryID" ng-model="selectLocation" ng-options="x for x in UK">
+         <select  name="UKCountryID" ng-model="selectLocation" ng-options="k as v for (k , v) in UK">
          </select>     
       </div>
       <div ng-show="selectLocation">
          <h3>You have selected %%selectLocation%%</h3>
-         <h4>Select business finder or community adverts</h4>
-         <select name="advertType" ng-model="searchTypeSelected">
-            <option ng-repeat="(key, value) in searchType" value="%%key%%">%%value%%</option>
-         </select>
+         <h4>Select a search type</h4>
+         <select name="advertType" ng-model="searchTypeSelected" ng-options="v as k for (k , v) in searchType"></select>
       </div>
-      <div ng-show="searchTypeSelected == 'business'">
+      <div ng-show="searchTypeSelected.id == 1">
          <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchTypeSelected%%</h3>
+            <h3>You have selected %%searchTypeSelected.description%%</h3>
             <h4>Select a category</h4>
             <select name="businessFinderParentCategory" ng-model="bfindercatselected" ng-options="v as k for (k , v) in businessFinder"></select>
          </div>
-         <div ng-app="" ng-if=category.list=bfindercatselected>
+         <div ng-app="" ng-if=category=bfindercatselected>
             <div ng-show="bfindercatselected">
-               <h4>Select a sub category in %%category.list.name%%</h4>
-               <select name="businessFinderChildCategory" ng-model="selectLocation" ng-options="x for x in category.list.values">
+               <h4>Select a sub category in %%category.name%%</h4>
+               <select name="businessFinderChildCategory" ng-model="selectLocation" ng-options="v as k for (k , v) in category.values">
                </select>  
             </div>
          </div>
       </div>
-      <div ng-show="searchTypeSelected == 'community'">
+      <div ng-show="searchTypeSelected.id == '2'">
          <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchTypeSelected%%</h3>
-            <p>Select a category</p>
-            <select name="businessFinderParentCategory" ng-model="selectLocation2" ng-options="v as k for (k , v) in communityFinder"></select>		
+            <h3>You have selected %%searchTypeSelected.description%%</h3>
+            <h4>Select a category</h4>
+            <select name="communityParentCategory" ng-model="selectLocation2" ng-options="v as k for (k , v) in communityFinder"></select>		
          </div>
       </div>
-      <!-- ==================== 2 ====================== --> 
-      <div ng-show="searchTypeSelected == 'marketplace'">
+      <div ng-show="searchTypeSelected.id == '3'">
          <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchTypeSelected%%</h3>
-            <p>Select a category</p>
-            <select name="marketplaceCategory" ng-model="selectLocation" ng-options="x for x in marketplace">
+            <h3>You have selected %%searchTypeSelected.description%%</h3>
+            <h4>Select a category</h4>
+            <select name="marketplaceCategory" ng-model="selectLocation" ng-options="k as v for (k , v) in marketplace">
             </select>  		
          </div>
       </div>
@@ -102,25 +100,34 @@ Create an Advert
    <?php 		
       if($city->country_id == 23){
       	//UK
-      	$UKCities[] = $city->city_name;
+      	$cityID             = $city->id;
+      	$UKCities[$cityID ] = $city->city_name;
       }else{
       	// Rest of the world
+      	$cityID      = $city->id;
       	$cityName    = $city->city_name;
       	$countryName = $city->country_name;	
-      	$internationalCities[$countryName]['values'][] = $cityName;				
+      	$internationalCities[$countryName]['values'][$cityID ] = $cityName;	
+      	$internationalCities[$countryName]['id']               = $city->country_id;	
+      	$internationalCities[$countryName]['countryName']      = $city->country_name;	
       }
       ?>
    @endforeach	 
    <?php 
       $UKCitiesJsonEncoded = json_encode((object)$UKCities);			
       $internationalJsonEncoded = json_encode((object)$internationalCities);
-
+      
       $searchtypesArr = array(); 
       ?>
    @foreach ($searchtypes as $type)	
+   <?php 		
+      $searchtypes_description = $type->searchtypes_description;
+      $searchtypesArr[$searchtypes_description]['description'] = $type->searchtypes_description;
+      $searchtypesArr[$searchtypes_description]['id']          = $type->id;		
+      ?>
    @endforeach	 
    <?php 	
-      $searchtypesJsonEncoded = json_encode((object)$searchtypesArr);			
+      $searchtypesJsonEncoded = json_encode((object)$searchtypesArr);	
       
       $internationalCities = array();
       $UKCities = array(); 
@@ -128,13 +135,14 @@ Create an Advert
    @foreach ($internationalcities as $city)	
    <?php 		
       if($city->country_id == 23){
-      	//UK
+      	// UK
       	$UKCities[] = $city->city_name;
       }else{
       	// Rest of the world
       	$cityName    = $city->city_name;
       	$countryName = $city->country_name;	
-      	$internationalCities[$countryName]['values'][] = $cityName;				
+      	$cityID      = $city->id;	
+      	$internationalCities[$countryName]['values'][$cityID ] = $cityName;				
       }
       ?>
    @endforeach	 
@@ -151,7 +159,7 @@ Create an Advert
       $parentName  = $category->searchparentcategory_name;	
       
       if($category->searchtype_id == 1){	
-      	$businessFinderArr[$parentName]['values'][] = $category->searchchildcategory_name;	
+      	$businessFinderArr[$parentName]['values'][$category->id] = $category->searchchildcategory_name;	
       }else if($category->searchtype_id == 2){	
       	$communityFinderArr[$parentName] = $category->searchparentcategory_title;
       }			
@@ -160,8 +168,17 @@ Create an Advert
    <?php 
       $businessFinderJsonEncoded  = json_encode((object)$businessFinderArr);	
       $communityFinderJsonEncoded = json_encode((object)$communityFinderArr);
-      
-      //dd($communityFinderJsonEncoded);
+      	
+      $marketplaceArr = array();
+      ?>
+   @foreach ($marketplaces as $category)	
+   <?php 
+      $marketID         = $category->id;
+      $marketplaceArr[$marketID] = $category->market_category;			
+      ?>
+   @endforeach	 
+   <?php 
+      $marketplaceJsonEncoded = json_encode($marketplaceArr);
       ?>
    <script>
       var app = angular.module('myApp', []);
@@ -176,13 +193,8 @@ Create an Advert
       	$scope.international   = <?php echo $internationalJsonEncoded ?>;	
       	$scope.searchType      = <?php echo $searchtypesJsonEncoded ?>;		
       	$scope.businessFinder  = <?php echo $businessFinderJsonEncoded ?>;
-      	$scope.communityFinder  = <?php echo $communityFinderJsonEncoded ?>
-      
-      $scope.communityFinderXXX = ["Activity & Sport Clubs", "Allotments & Gardening", "Art & Hobby Classes", "Artists & Creators", "Car Pools", "Child & Parent Groups", "Cultural & Regligious Groups", "Dating", "Dog Walkers", "Events & Shows", "Farm Produce", "Finding Friends", "Help Offered", "Help Wanted", "Kids clubs", "Lost & Found", "Musicians & Bands", "Senior Groups", "Tutoring & Classes", "Volunteers & Charities"]; 
-      
-      $scope.marketplace  = [
-      "antiques", "appliances", "arts+crafts", "atv/utv/sno", "auto parts", "aviation", "baby+kid", "beauty+hlth", "bike parts", "bikes", "boat parts", "boats", "books", "caravn+mtrhm", "cars+vans", "cds/dvd/vhs", "clothes+acc", "collectibles", "computer parts", "computers", "electronics", "farm+garden", "free", "furniture", "garage sale", "general", "heavy equip", "household", "jewellery", "materials", "mobile phones", "motorbike parts", "motorbike", "music instr", "photo+video", "pet accessories", "sporting", "tickets", "tools", "toys+games", "trailers", "video gaming", "wanted", "wheels+tires"]; 
-      
+      	$scope.communityFinder = <?php echo $communityFinderJsonEncoded ?>;
+          $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
       });
    </script>
    <br /><br />
