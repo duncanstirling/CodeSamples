@@ -65,8 +65,7 @@
 								+'<a role="menuitem" tabindex="-1" href="#">@{{a.desc}}</a></li></ul>'
 								+'</div></div>';
 							}
-                        }
-                        
+                        }                       
                         class Menu extends Codeblock {
 							constructor(layout, menuTitle, menuArray, fontAwesomeImage) {
 								super(layout);
