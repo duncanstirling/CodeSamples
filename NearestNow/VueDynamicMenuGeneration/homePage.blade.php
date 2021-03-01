@@ -7,18 +7,18 @@
       <div id="main" class="container text-center" style="">
          <script>  
             $(document).ready(function(){
-                 $(".searchCategory li a").click(function() {			 
-                    category = $(this).text();	
-                    $("#searchcat").val(category);
-                });
-                 $(".internationalLocation li a").click(function() {			 
-                    locInternational = $(this).text();	
-                    $("#searchloc").val(locInternational);
-                });
-                 $(".communitylink").click(function() {			 
-                    locInternational = $(this).text();	
-                    $("#searchcat").val(locInternational);
-                });		
+				$(".searchCategory li a").click(function() {			 
+					category = $(this).text();	
+					$("#searchcat").val(category);
+				});
+				$(".internationalLocation li a").click(function() {			 
+					locInternational = $(this).text();	
+					$("#searchloc").val(locInternational);
+				});
+				$(".communitylink").click(function() {			 
+					locInternational = $(this).text();	
+					$("#searchcat").val(locInternational);
+				});		
             });
             
             function setLoc(x){
@@ -36,14 +36,14 @@
                         $x = array(); 
                         $y = array(); ?>
                      @foreach ($businessfindercategories as $child)	  											
-						<?php 
-						$parentName = $child->searchparentcategory_name;
-						$parentID   = $child->searchparentcategory_id;
-						$x['categories'][$parentName][]['desc'] = $parentName; 
-						$y[$parentID][$child->id]['name']   = $child->searchparentcategory_name;
-						$y[$parentID][$child->id]['title']  = $child->searchparentcategory_title;
-						$y[$parentID][$child->id]['faicon'] = $child->searchparentcategory_icon;
-						?>
+                     <?php 
+                        $parentName = $child->searchparentcategory_name;
+                        $parentID   = $child->searchparentcategory_id;
+                        $x['categories'][$parentName][]['desc'] = $parentName; 
+                        $y[$parentID][$child->id]['name']   = $child->searchparentcategory_name;
+                        $y[$parentID][$child->id]['title']  = $child->searchparentcategory_title;
+                        $y[$parentID][$child->id]['faicon'] = $child->searchparentcategory_icon;
+                      ?>
                      @endforeach	 
                      <?php 
                         $menuOptionsArr = json_encode((object)$x);
@@ -51,32 +51,32 @@
                         ?>	
                      <script>
                         class Codeblock {
-                          constructor(layout) {
-                        	this.layout = layout;
-                          }
-                          present() {
-                        	return '<div class="'+this.layout+' locList"><div class="dropdown">'
-                        	+'<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">'
-                        	+'<i class="'+this.fontAwesomeImage+'"></i>&nbsp;&nbsp;'
-                        	+this.menuTitle+'&nbsp;&nbsp;<span class="caret"></span></button>'		
-                        	+'<ul class="dropdown-menu searchCategory" role="menu" aria-labelledby="menu1" id="baudrate">'
-                        	+'<li role="presentation" v-for = "(a, index) in categories.'+this.menuArray
-                        	+'"  v-bind:value = "a.name">'
-                        	+'<a role="menuitem" tabindex="-1" href="#">@{{a.desc}}</a></li></ul>'
-                        	+'</div></div>';
-                          }
+							constructor(layout) {
+								this.layout = layout;
+							}
+							present() {
+								return '<div class="'+this.layout+' locList"><div class="dropdown">'
+								+'<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">'
+								+'<i class="'+this.fontAwesomeImage+'"></i>&nbsp;&nbsp;'
+								+this.menuTitle+'&nbsp;&nbsp;<span class="caret"></span></button>'		
+								+'<ul class="dropdown-menu searchCategory" role="menu" aria-labelledby="menu1" id="baudrate">'
+								+'<li role="presentation" v-for = "(a, index) in categories.'+this.menuArray
+								+'"  v-bind:value = "a.name">'
+								+'<a role="menuitem" tabindex="-1" href="#">@{{a.desc}}</a></li></ul>'
+								+'</div></div>';
+							}
                         }
                         
                         class Menu extends Codeblock {
-                          constructor(layout, menuTitle, menuArray, fontAwesomeImage) {
-                        	super(layout);
-                        	this.menuTitle        = menuTitle;
-                        	this.menuArray        = menuArray;
-                        	this.fontAwesomeImage = fontAwesomeImage;
-                          }  
-                          show() {
-                        	return this.present();
-                          }
+							constructor(layout, menuTitle, menuArray, fontAwesomeImage) {
+								super(layout);
+								this.menuTitle        = menuTitle;
+								this.menuArray        = menuArray;
+								this.fontAwesomeImage = fontAwesomeImage;
+							}  
+							show() {
+								return this.present();
+							}
                         }                        
                         var menuTitleAndIcon = <?php echo $menuTitlesArr; ?>;
                         var menutitle;
@@ -87,17 +87,17 @@
                         var myMenu;
                         
                         $.each( menuTitleAndIcon, function( key1, valueOBJ ) {	
-                        	for( var key2 in valueOBJ ) {
-                        	menuname = valueOBJ[key2]['name'];
-                        	menutitle = valueOBJ[key2]['title'];
-                        	menufaicon = valueOBJ[key2]['faicon'];
-                        	}	                        	
-                        	myMenu = new Menu("col-xs-6 col-sm-3 col-md-3", menutitle, menuname, menufaicon);
-                        	document.getElementById("businessfinder").innerHTML += myMenu.show();			
+                        for( var key2 in valueOBJ ) {
+							menuname = valueOBJ[key2]['name'];
+							menutitle = valueOBJ[key2]['title'];
+							menufaicon = valueOBJ[key2]['faicon'];
+                        }	                        	
+                        myMenu = new Menu("col-xs-6 col-sm-3 col-md-3", menutitle, menuname, menufaicon);
+							document.getElementById("businessfinder").innerHTML += myMenu.show();			
                         });	                        
                         var vm = new Vue({
-                        	el: '#databinding',
-                        	data: <?php echo $menuOptionsArr; ?>,
+							el: '#databinding',
+							data: <?php echo $menuOptionsArr; ?>,
                         });                        
                      </script>
                   </div>
@@ -110,15 +110,15 @@
                   </div>
                   <div class="row uklocations">
                      @foreach ($internationalcities as $key => $rec)
-                     @if($key =='UK')            
-                     @foreach($rec['cities'] as $key2 => $rec2)
-                     <div class="col-xs-6 col-sm-4 col-md-2 locList">
-                        <ul>
-                           <li><a class="locationLink" href="#link{{$key2}}" onclick="setLoc(this)">{{ $rec2 }}</a></li>
-                        </ul>
-                     </div>
-                     @endforeach
-                     @endif			
+						 @if($key =='UK')            
+							 @foreach($rec['cities'] as $key2 => $rec2)
+							 <div class="col-xs-6 col-sm-4 col-md-2 locList">
+								<ul>
+								   <li><a class="locationLink" href="#link{{$key2}}" onclick="setLoc(this)">{{ $rec2 }}</a></li>
+								</ul>
+							 </div>
+							 @endforeach
+						 @endif			
                      @endforeach
                   </div>
                   <div class="row worldwidelocations" style="display:none;">
