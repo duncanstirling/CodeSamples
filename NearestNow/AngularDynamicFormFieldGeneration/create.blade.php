@@ -16,22 +16,23 @@ Create an Advert
    <div class="form-group">
       <input required="required" value="{{ old('title') }}" placeholder="Enter title here" type="text" name="title" class="form-control" />
    </div>
-   button, input, select, textarea {
-   font-family: inherit;
-   font-size: inherit;
-   line-height: inherit;
-   display: block;
-   width: 100%;
-   height: 34px;
-   padding: 6px 12px;
-   font-size: 14px;
-   line-height: 1.42857143;
-   color: #555;
-   background-color: #fff;
-   background-image: none;
-   border: 1px solid #ccc;
-   border-radius: 4px;
-   }
+   <style>
+      button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      display: block;
+      width: 100%;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #555;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      }
    </style>
    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
    <div ng-app="myApp" ng-controller="myCtrl">
@@ -45,18 +46,21 @@ Create an Advert
          <select ng-model="selectedcountry" ng-options="v as k for (k , v) in international"></select>
       </div>
       <div ng-show="selectedcountry">
+         <input type="hidden" id="countryID" name="countryID" 
+            value="%%selectedcountry.country.countryID%%">	
          <h4>Select a city in %%selectedcountry.values.countryName%%</h4>
-         <select name="internationalCountryID" ng-model="selectLocation" ng-options="v as k for (k , v) in selectedcountry.values.cities">
-         </select>   
-         <input type="hidden" id="internationalCountryiD" name="internationalCountryID" 
-            value="%%selectedcountry.country.countryID%%">		   
+         <select name="cityID" ng-model="selectLocation" ng-options="v as k for (k , v) in selectedcountry.values.cities">
+         </select>    
       </div>
       <div ng-show="myVar == 'UK'">
+         <input type="hidden" id="countryID" name="countryID" 
+            value="23">	
          <h3>%%myVar%% locations</h3>
-         <select  name="UKCountryID" ng-model="selectLocation" ng-options="v as k for (k , v) in UK.values.cities">
-         </select>     
+         <select  name="cityID" ng-model="selectLocation" ng-options="v as k for (k , v) in UK.values.cities">
+         </select>   
       </div>
       <div ng-show="selectLocation">
+         <input type="hidden" id="countryID" name="countryID" value="%%selectLocation.cityID%%">	
          <h3>You have selected %%selectLocation.cityName%%</h3>
          <h4>Select a search type</h4>
          <select name="advertType" ng-model="searchTypeSelected" ng-options="v as k for (k , v) in searchType"></select>
@@ -87,11 +91,11 @@ Create an Advert
             <h3>You have selected %%searchTypeSelected.description%%</h3>
             <h4>Select a category</h4>
             <select name="marketplaceCategory" ng-model="selectLocation" ng-options="k as v for (k , v) in marketplace">
-            </select>  				
+            </select>  		
          </div>
       </div>
    </div>
-   <?php // useing Vue.js to construct the Classifieds menus content with child category data from DB
+   <?php
       $internationalCities = array();
       $UKCities = array(); 
       ?>
@@ -132,6 +136,7 @@ Create an Advert
    @endforeach	 
    <?php 	
       $searchtypesJsonEncoded = json_encode((object)$searchtypesArr);	
+      
       $businessFinderArr = array();
       $communityFinderArr = array();
       ?>
@@ -154,7 +159,9 @@ Create an Advert
    <?php 
       $businessFinderJsonEncoded  = json_encode((object)$businessFinderArr);	
       $communityFinderJsonEncoded = json_encode((object)$communityFinderArr);
+      
       $marketplaceArr = array();
+      
       ?>
    @foreach ($marketplaces as $category)	
    <?php 
@@ -163,11 +170,11 @@ Create an Advert
       ?>
    @endforeach	 
    <?php 
-      $marketplaceJsonEncoded = json_encode($marketplaceArr);		
-      //dd($communityFinderJsonEncoded);
+      $marketplaceJsonEncoded = json_encode($marketplaceArr);
       ?>
    <script>
       var app = angular.module('myApp', []);
+      
         app.config(function($interpolateProvider) {
           $interpolateProvider.startSymbol('%%');
           $interpolateProvider.endSymbol('%%');
@@ -182,7 +189,7 @@ Create an Advert
           $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
       });
    </script>
-   <br /><br />
+   <br /><br />     
    <div class="form-group">
       <textarea name='body' class="form-control">{{ old('body') }}</textarea>
    </div>
