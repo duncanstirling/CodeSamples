@@ -6,9 +6,9 @@ Create an Advert
 <script type="text/javascript" src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
 <script type="text/javascript">
    tinymce.init({
-     selector: "textarea",
-     plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
-     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+   selector: "textarea",
+   plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
+   toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
    });
 </script>
 <form action="{{ url('/new-post') }}" method="post">
@@ -49,14 +49,13 @@ Create an Advert
          <input type="hidden" id="countryID" name="countryID" 
             value="%%selectedcountry.country.countryID%%">	
          <h4>Select a city in %%selectedcountry.values.countryName%%</h4>
-         <select name="cityID" ng-model="selectLocation" ng-options="v as k for (k , v) in selectedcountry.values.cities">
+         <select name="internationalCityID" ng-model="selectInternationalCity" ng-options="v as k for (k , v) in selectedcountry.values.cities">
          </select>    
       </div>
       <div ng-show="myVar == 'UK'">
-         <input type="hidden" id="countryID" name="countryID" 
-            value="23">	
+         <input type="hidden" id="countryID" name="countryID" value="23">	
          <h3>%%myVar%% locations</h3>
-         <select  name="cityID" ng-model="selectLocation" ng-options="v as k for (k , v) in UK.values.cities">
+         <select  name="ukCityID" ng-model="selectUKCity" ng-options="v as k for (k , v) in UK.values.cities">
          </select>   
       </div>
       <div ng-show="selectLocation">
@@ -69,12 +68,12 @@ Create an Advert
          <div ng-show="searchTypeSelected">
             <h3>You have selected %%searchTypeSelected.description%%</h3>
             <h4>Select a category</h4>
-            <select name="businessFinderParentCategory" ng-model="bfindercatselected" ng-options="v as k for (k , v) in businessFinder"></select>
+            <select name="bfinderParentCategory" ng-model="bfParentCat" ng-options="v as k for (k , v) in businessFinder"></select>
          </div>
-         <div ng-app="" ng-if=category=bfindercatselected>
-            <div ng-show="bfindercatselected">
+         <div ng-app="" ng-if=category=bfParentCat>
+            <div ng-show="bfParentCat">
                <h4>Select a sub category in %%category.parent%%</h4>
-               <select name="businessFinderChildCategory" ng-model="selectLocation" ng-options="v as k for (k , v) in category.values">
+               <select name="bfinderChildCategory" ng-model="bfChildCat" ng-options="v as k for (k , v) in category.values">
                </select>  
             </div>
          </div>
@@ -83,19 +82,19 @@ Create an Advert
          <div ng-show="searchTypeSelected">
             <h3>You have selected %%searchTypeSelected.description%%</h3>
             <h4>Select a category</h4>
-            <select name="communityParentCategory" ng-model="selectLocation2" ng-options="v as k for (k , v) in communityFinder"></select>		
+            <select name="communityParentCategory" ng-model="comParentCat" ng-options="v as k for (k , v) in communityFinder"></select>		
          </div>
       </div>
       <div ng-show="searchTypeSelected.id == '3'">
          <div ng-show="searchTypeSelected">
             <h3>You have selected %%searchTypeSelected.description%%</h3>
             <h4>Select a category</h4>
-            <select name="marketplaceCategory" ng-model="selectLocation" ng-options="k as v for (k , v) in marketplace">
+            <select name="marketParentCategory" ng-model="marketParentCat" ng-options="k as v for (k , v) in marketplace">
             </select>  		
          </div>
       </div>
    </div>
-   <?php
+   <?php 
       $internationalCities = array();
       $UKCities = array(); 
       ?>
@@ -107,17 +106,17 @@ Create an Advert
       $countryName = $city->country_name;	
       
       if($city->country_id == 23){
-		  //UK
-		  $UKCities['values']['cities'][$cityName]['cityID']   = $cityID;
-		  $UKCities['values']['cities'][$cityName]['cityName'] = $cityName;			
-		  $UKCities['values']['countryID']                     = $countryID;
-		  $UKCities['values']['countryName']                   = $countryName;			
+      //UK
+      $UKCities['values']['cities'][$cityName]['cityID']   = $cityID;
+      $UKCities['values']['cities'][$cityName]['cityName'] = $cityName;			
+      $UKCities['values']['countryID']   = $countryID;
+      $UKCities['values']['countryName'] = $countryName;			
       }else{
-		  // Rest of the world
-		  $internationalCities[$countryName]['values']['cities'][$cityName]['cityID']   = $cityID;
-		  $internationalCities[$countryName]['values']['cities'][$cityName]['cityName'] = $cityName;			
-		  $internationalCities[$countryName]['values']['countryID']                     = $countryID;
-		  $internationalCities[$countryName]['values']['countryName']                   = $countryName;				
+      // Rest of the world
+      $internationalCities[$countryName]['values']['cities'][$cityName]['cityID']   = $cityID;
+      $internationalCities[$countryName]['values']['cities'][$cityName]['cityName'] = $cityName;			
+      $internationalCities[$countryName]['values']['countryID']   = $countryID;
+      $internationalCities[$countryName]['values']['countryName'] = $countryName;				
       }
       ?>
    @endforeach	 
@@ -140,17 +139,17 @@ Create an Advert
       ?>
    @foreach ($businessAndCommunity as $category)	
    <?php 
-      $parentTitle         = $category->searchparentcategory_title;
-      $parentName          = $category->searchparentcategory_name;	
-      $childcategoryName   = $category->searchchildcategory_name;	
+      $parentTitle = $category->searchparentcategory_title;
+      $parentName  = $category->searchparentcategory_name;	
+      $childcategoryName = $category->searchchildcategory_name;	
       $parentcategoryTitle = $category->searchparentcategory_title;
       
       if($category->searchtype_id == 1){	
-      	$businessFinderArr[$parentName]['parent']                                     = $parentName;		
-      	$businessFinderArr[$parentName]['values'][$childcategoryName]['categoryID']   = $category->id;	
-      	$businessFinderArr[$parentName]['values'][$childcategoryName]['categoryName'] = $category->$childcategoryName;			
+      $businessFinderArr[$parentName]['parent']                                     = $parentName;		
+      $businessFinderArr[$parentName]['values'][$childcategoryName]['categoryID']   = $category->id;	
+      $businessFinderArr[$parentName]['values'][$childcategoryName]['categoryName'] = $category->$childcategoryName;			
       }else if($category->searchtype_id == 2){	
-      	$communityFinderArr[$parentName] = $parentcategoryTitle;
+      $communityFinderArr[$parentName] = $parentcategoryTitle;
       }			
       ?>
    @endforeach	 
@@ -158,7 +157,7 @@ Create an Advert
       $businessFinderJsonEncoded  = json_encode((object)$businessFinderArr);	
       $communityFinderJsonEncoded = json_encode((object)$communityFinderArr);
       $marketplaceArr = array();
-   ?>
+      ?>
    @foreach ($marketplaces as $category)	
    <?php 
       $marketID         = $category->id;
@@ -167,25 +166,23 @@ Create an Advert
    @endforeach	 
    <?php 
       $marketplaceJsonEncoded = json_encode($marketplaceArr);
-   ?>
+      ?>
    <script>
       var app = angular.module('myApp', []);
-      
-        app.config(function($interpolateProvider) {
-          $interpolateProvider.startSymbol('%%');
-          $interpolateProvider.endSymbol('%%');
-        });
-      
+      app.config(function($interpolateProvider) {
+      $interpolateProvider.startSymbol('%%');
+      $interpolateProvider.endSymbol('%%');
+      });      
       app.controller('myCtrl', function($scope) {
-      	$scope.UK              = <?php echo $UKCitiesJsonEncoded ?>;	
-      	$scope.international   = <?php echo $internationalJsonEncoded ?>;
-      	$scope.searchType      = <?php echo $searchtypesJsonEncoded ?>;		
-      	$scope.businessFinder  = <?php echo $businessFinderJsonEncoded ?>;
-      	$scope.communityFinder = <?php echo $communityFinderJsonEncoded ?>;
-        $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
+      $scope.UK              = <?php echo $UKCitiesJsonEncoded ?>;	
+      $scope.international   = <?php echo $internationalJsonEncoded ?>;
+      $scope.searchType      = <?php echo $searchtypesJsonEncoded ?>;		
+      $scope.businessFinder  = <?php echo $businessFinderJsonEncoded ?>;
+      $scope.communityFinder = <?php echo $communityFinderJsonEncoded ?>;
+      $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
       });
    </script>
-   <br /><br />     
+   <br /><br />
    <div class="form-group">
       <textarea name='body' class="form-control">{{ old('body') }}</textarea>
    </div>
