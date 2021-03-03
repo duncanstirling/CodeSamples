@@ -107,24 +107,23 @@ Create an Advert
       $countryName = $city->country_name;	
       
       if($city->country_id == 23){
-      //UK
-      $UKCities['values']['cities'][$cityName]['cityID']   = $cityID;
-      $UKCities['values']['cities'][$cityName]['cityName'] = $cityName;			
-      $UKCities['values']['countryID']                     = $countryID;
-      $UKCities['values']['countryName']                   = $countryName;			
+		  //UK
+		  $UKCities['values']['cities'][$cityName]['cityID']   = $cityID;
+		  $UKCities['values']['cities'][$cityName]['cityName'] = $cityName;			
+		  $UKCities['values']['countryID']                     = $countryID;
+		  $UKCities['values']['countryName']                   = $countryName;			
       }else{
-      // Rest of the world
-      $internationalCities[$countryName]['values']['cities'][$cityName]['cityID']   = $cityID;
-      $internationalCities[$countryName]['values']['cities'][$cityName]['cityName'] = $cityName;			
-      $internationalCities[$countryName]['values']['countryID']                     = $countryID;
-      $internationalCities[$countryName]['values']['countryName']                   = $countryName;				
+		  // Rest of the world
+		  $internationalCities[$countryName]['values']['cities'][$cityName]['cityID']   = $cityID;
+		  $internationalCities[$countryName]['values']['cities'][$cityName]['cityName'] = $cityName;			
+		  $internationalCities[$countryName]['values']['countryID']                     = $countryID;
+		  $internationalCities[$countryName]['values']['countryName']                   = $countryName;				
       }
       ?>
    @endforeach	 
    <?php 
       $UKCitiesJsonEncoded = json_encode((object)$UKCities);			
       $internationalJsonEncoded = json_encode((object)$internationalCities);
-      
       $searchtypesArr = array(); 
       ?>
    @foreach ($searchtypes as $type)	
@@ -136,15 +135,14 @@ Create an Advert
    @endforeach	 
    <?php 	
       $searchtypesJsonEncoded = json_encode((object)$searchtypesArr);	
-      
       $businessFinderArr = array();
       $communityFinderArr = array();
       ?>
    @foreach ($businessAndCommunity as $category)	
    <?php 
-      $parentTitle = $category->searchparentcategory_title;
-      $parentName  = $category->searchparentcategory_name;	
-      $childcategoryName = $category->searchchildcategory_name;	
+      $parentTitle         = $category->searchparentcategory_title;
+      $parentName          = $category->searchparentcategory_name;	
+      $childcategoryName   = $category->searchchildcategory_name;	
       $parentcategoryTitle = $category->searchparentcategory_title;
       
       if($category->searchtype_id == 1){	
@@ -159,10 +157,8 @@ Create an Advert
    <?php 
       $businessFinderJsonEncoded  = json_encode((object)$businessFinderArr);	
       $communityFinderJsonEncoded = json_encode((object)$communityFinderArr);
-      
       $marketplaceArr = array();
-      
-      ?>
+   ?>
    @foreach ($marketplaces as $category)	
    <?php 
       $marketID         = $category->id;
@@ -171,7 +167,7 @@ Create an Advert
    @endforeach	 
    <?php 
       $marketplaceJsonEncoded = json_encode($marketplaceArr);
-      ?>
+   ?>
    <script>
       var app = angular.module('myApp', []);
       
@@ -186,7 +182,7 @@ Create an Advert
       	$scope.searchType      = <?php echo $searchtypesJsonEncoded ?>;		
       	$scope.businessFinder  = <?php echo $businessFinderJsonEncoded ?>;
       	$scope.communityFinder = <?php echo $communityFinderJsonEncoded ?>;
-          $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
+        $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
       });
    </script>
    <br /><br />     
