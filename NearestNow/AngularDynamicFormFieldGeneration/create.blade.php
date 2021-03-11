@@ -37,66 +37,69 @@ Create an Advert
    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
    <div ng-app="myApp" ng-controller="myCtrl">
       <h3>Select the UK or abroad</h3>
-      <select ng-model="myVar">
-         <option value="International">international
-         <option value="UK">UK
-      </select>
-      <div ng-show="myVar == 'International'">
-         <h3>%%myVar%% locations</h3>
-         <select ng-model="selectedcountry" ng-options="v as k for (k , v) in international"></select>
+      <select name="region" ng-model="user.myVar">
+      <option value=""  {{ old('region') == '' ? 'selected' : '' }}>select</option>
+      <option value="International"  {{ old('region') == 'International' ? 'selected' : '' }}>International</option>
+      <option value="UK" {{ old('region') == 'UK' ? 'selected' : '' }}>UK</option>
+      </select> 
+      <div ng-show="user.myVar == 'International'">
+         {{ old('internationalCountry') }}	
+         <h3>%%user.myVar%% locations</h3>
+         <select name="internationalCountryID" ng-model="selectedcountry" ng-options="k as v.countryName for (k , v) in cities"></select>
       </div>
       <div ng-show="selectedcountry">
-         <input type="hidden" id="countryID" name="countryID" 
-            value="%%selectedcountry.country.countryID%%">	
-         <h4>Select a city in %%selectedcountry.values.countryName%%</h4>
-         <select name="internationalCityID" ng-model="selectInternationalCity" ng-options="v as k for (k , v) in selectedcountry.values.cities">
-         </select>    
+         <h4>Select a city in %%cities[selectedcountry]['countryName']%%</h4>
+         <select name="internationalCityID" ng-model="selectLocation" ng-options="k as v for (k , v) in cities[selectedcountry]['cities']">
+         </select> 	   
       </div>
-      <div ng-show="myVar == 'UK'">
-         <input type="hidden" id="countryID" name="countryID" value="23">	
+      <div ng-show="user.myVar == 'UK'">
          <h3>%%myVar%% locations</h3>
-         <select  name="ukCityID" ng-model="selectUKCity" ng-options="v as k for (k , v) in UK.values.cities">
-         </select>   
+         <select name="UKCIty" ng-model="selectLocation" ng-options="k as v for (k , v) in cities['23']['cities']">
+         </select> 
       </div>
       <div ng-show="selectLocation">
-         <input type="hidden" id="countryID" name="countryID" value="%%selectLocation.cityID%%">	
-         <h3>You have selected %%selectLocation.cityName%%</h3>
+         <h3 ng-show="user.myVar == 'UK'">
+            You have selected %%cities['23']['cities'][selectLocation]%%
+         </h3>
+         <h3 ng-show="user.myVar != 'UK'">
+            You have selected %%cities[selectedcountry]['cities'][selectLocation]%%
+         </h3>
          <h4>Select a search type</h4>
-         <select name="advertType" ng-model="searchTypeSelected" ng-options="v as k for (k , v) in searchType"></select>
+         <select name="searchType" ng-model="searchTypeSelected" ng-options="k as v for (k , v) in searchType"> </select>
       </div>
-      <div ng-show="searchTypeSelected.id == 1">
+      <div ng-show="searchTypeSelected == 1">
          <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchTypeSelected.description%%</h3>
+            <h3>You have selected %%searchType[searchTypeSelected]%%</h3>
             <h4>Select a category</h4>
-            <select name="bfinderParentCategory" ng-model="bfParentCat" ng-options="v as k for (k , v) in businessFinder"></select>
+            <select name="bfParentCat" ng-model="bfParentCat" ng-options="k as v['parent']['parentName'] for (k , v) in businessFinder"></select>
          </div>
          <div ng-app="" ng-if=category=bfParentCat>
             <div ng-show="bfParentCat">
-               <h4>Select a sub category in %%category.parent%%</h4>
-               <select name="bfinderChildCategory" ng-model="bfChildCat" ng-options="v as k for (k , v) in category.values">
+               <h4>Select a sub category in %%businessFinder[bfParentCat]['parent']['parentName']%%</h4>
+               <select name="bfinderChildCategory" ng-model="bfChildCat" ng-options="k as v for (k , v) in businessFinder[bfParentCat]['child']">
                </select>  
             </div>
          </div>
       </div>
-      <div ng-show="searchTypeSelected.id == '2'">
+      <div ng-show="searchTypeSelected == '2'">
          <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchTypeSelected.description%%</h3>
+            <h3>You have selected %%searchType[searchTypeSelected]%%</h3>
             <h4>Select a category</h4>
-            <select name="communityParentCategory" ng-model="comParentCat" ng-options="v as k for (k , v) in communityFinder"></select>		
+            <select name="communityParentCategory" ng-model="comParentCat" ng-options="k as v for (k , v) in communityFinder"></select>		
          </div>
       </div>
-      <div ng-show="searchTypeSelected.id == '3'">
+      <div ng-show="searchTypeSelected == '3'">
          <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchTypeSelected.description%%</h3>
+            <h3>You have selected %%searchType[searchTypeSelected]%%</h3>
             <h4>Select a category</h4>
             <select name="marketParentCategory" ng-model="marketParentCat" ng-options="k as v for (k , v) in marketplace">
             </select>  		
          </div>
       </div>
+      <!-- ########################################################## -->     
    </div>
-   <?php 
-      $internationalCities = array();
-      $UKCities = array(); 
+   <?php
+      $cities = array(); 
       ?>
    @foreach ($internationalcities as $city)	
    <?php 	
@@ -107,29 +110,23 @@ Create an Advert
       
       if($city->country_id == 23){
       //UK
-      $UKCities['values']['cities'][$cityName]['cityID']   = $cityID;
-      $UKCities['values']['cities'][$cityName]['cityName'] = $cityName;			
-      $UKCities['values']['countryID']   = $countryID;
-      $UKCities['values']['countryName'] = $countryName;			
+      // Rest of the world
+      $cities[23]['cities'][$cityID] = $cityName;			
+      $cities[23]['countryName']     = $countryName;			
       }else{
       // Rest of the world
-      $internationalCities[$countryName]['values']['cities'][$cityName]['cityID']   = $cityID;
-      $internationalCities[$countryName]['values']['cities'][$cityName]['cityName'] = $cityName;			
-      $internationalCities[$countryName]['values']['countryID']   = $countryID;
-      $internationalCities[$countryName]['values']['countryName'] = $countryName;				
+      $cities[$countryID]['cities'][$cityID] = $cityName;			
+      $cities[$countryID]['countryName']     = $countryName;				
       }
       ?>
    @endforeach	 
    <?php 
-      $UKCitiesJsonEncoded = json_encode((object)$UKCities);			
-      $internationalJsonEncoded = json_encode((object)$internationalCities);
+      $citiesJsonEncoded = json_encode((object)$cities);			
       $searchtypesArr = array(); 
       ?>
    @foreach ($searchtypes as $type)	
    <?php 		
-      $searchtypes_description = $type->searchtypes_description;
-      $searchtypesArr[$searchtypes_description]['description'] = $type->searchtypes_description;
-      $searchtypesArr[$searchtypes_description]['id']          = $type->id;		
+      $searchtypesArr[$type->id] = $type->searchtypes_description;		
       ?>
    @endforeach	 
    <?php 	
@@ -141,26 +138,27 @@ Create an Advert
    <?php 
       $parentTitle = $category->searchparentcategory_title;
       $parentName  = $category->searchparentcategory_name;	
-      $childcategoryName = $category->searchchildcategory_name;	
-      $parentcategoryTitle = $category->searchparentcategory_title;
+      $parentID    = $category->parentID;
+      $childID     = $category->childID;
+      $childName   = $category->searchchildcategory_name;	
       
       if($category->searchtype_id == 1){	
-      $businessFinderArr[$parentName]['parent']                                     = $parentName;		
-      $businessFinderArr[$parentName]['values'][$childcategoryName]['categoryID']   = $category->id;	
-      $businessFinderArr[$parentName]['values'][$childcategoryName]['categoryName'] = $category->$childcategoryName;			
+      $businessFinderArr[$parentID]['parent']['parentName']  = $parentName;	
+      $businessFinderArr[$parentID]['parent']['parentTitle'] = $parentTitle;				
+      $businessFinderArr[$parentID]['child'][$childID]	   = $childName;				
       }else if($category->searchtype_id == 2){	
-      $communityFinderArr[$parentName] = $parentcategoryTitle;
+      $communityFinderArr[$parentID] = $parentName;
       }			
       ?>
    @endforeach	 
    <?php 
       $businessFinderJsonEncoded  = json_encode((object)$businessFinderArr);	
-      $communityFinderJsonEncoded = json_encode((object)$communityFinderArr);
+      $communityFinderJsonEncoded = json_encode((object)$communityFinderArr);	
       $marketplaceArr = array();
       ?>
    @foreach ($marketplaces as $category)	
    <?php 
-      $marketID         = $category->id;
+      $marketID = $category->id;
       $marketplaceArr[$marketID] = $category->market_category;			
       ?>
    @endforeach	 
@@ -169,20 +167,29 @@ Create an Advert
       ?>
    <script>
       var app = angular.module('myApp', []);
+      
       app.config(function($interpolateProvider) {
       $interpolateProvider.startSymbol('%%');
       $interpolateProvider.endSymbol('%%');
-      });      
+      });
+      
       app.controller('myCtrl', function($scope) {
-      $scope.UK              = <?php echo $UKCitiesJsonEncoded ?>;	
-      $scope.international   = <?php echo $internationalJsonEncoded ?>;
+      
+      $scope.cities          = <?php echo $citiesJsonEncoded ?>;	
       $scope.searchType      = <?php echo $searchtypesJsonEncoded ?>;		
       $scope.businessFinder  = <?php echo $businessFinderJsonEncoded ?>;
       $scope.communityFinder = <?php echo $communityFinderJsonEncoded ?>;
       $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
+      
+      $scope.master = {myVar:"{{ old('region') }}", selectedcountry:"{{ old('internationalCountry') }}"};
+      $scope.reset = function() {
+      $scope.user = angular.copy($scope.master);
+      };
+      $scope.reset();
+      
       });
    </script>
-   <br /><br />
+   <br /><br />  
    <div class="form-group">
       <textarea name='body' class="form-control">{{ old('body') }}</textarea>
    </div>
