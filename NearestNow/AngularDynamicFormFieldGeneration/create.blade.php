@@ -11,92 +11,89 @@ Create an Advert
    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
    });
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+   button, input, select, textarea {
+   font-family: inherit;
+   font-size: inherit;
+   line-height: inherit;
+   display: block;
+   width: 100%;
+   height: 34px;
+   padding: 6px 12px;
+   font-size: 14px;
+   line-height: 1.42857143;
+   color: #555;
+   background-color: #fff;
+   background-image: none;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+   }
+</style>
 <form action="{{ url('/new-post') }}" method="post">
    <input type="hidden" name="_token" value="{{ csrf_token() }}">
    <div class="form-group">
       <input required="required" value="{{ old('title') }}" placeholder="Enter title here" type="text" name="title" class="form-control" />
    </div>
-   <style>
-      button, input, select, textarea {
-      font-family: inherit;
-      font-size: inherit;
-      line-height: inherit;
-      display: block;
-      width: 100%;
-      height: 34px;
-      padding: 6px 12px;
-      font-size: 14px;
-      line-height: 1.42857143;
-      color: #555;
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      }
-   </style>
-   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
    <div ng-app="myApp" ng-controller="myCtrl">
       <h3>Select the UK or abroad</h3>
-      <select name="region" ng-model="user.myVar">
-      <option value=""  {{ old('region') == '' ? 'selected' : '' }}>select</option>
-      <option value="International"  {{ old('region') == 'International' ? 'selected' : '' }}>International</option>
-      <option value="UK" {{ old('region') == 'UK' ? 'selected' : '' }}>UK</option>
-      </select> 
-      <div ng-show="user.myVar == 'International'">
-         {{ old('internationalCountry') }}	
-         <h3>%%user.myVar%% locations</h3>
-         <select name="internationalCountryID" ng-model="selectedcountry" ng-options="k as v.countryName for (k , v) in cities"></select>
+      <select name="region" ng-model="user.region">
+         <option value="" >select</option>
+         <option value="international">International</option>
+         <option value="UK">UK</option>
+      </select>
+      <div ng-show="user.region == 'international'">
+         <h3>%%user.region%% locations</h3>
+         <select name="internationalCountryID" ng-model="user.selectedcountry" 
+            ng-options="k as v.countryName for (k, v) in cities"></select>	
       </div>
-      <div ng-show="selectedcountry">
-         <h4>Select a city in %%cities[selectedcountry]['countryName']%%</h4>
-         <select name="internationalCityID" ng-model="selectLocation" ng-options="k as v for (k , v) in cities[selectedcountry]['cities']">
+      <div ng-show="user.region == 'international' && user.selectedcountry">
+         <h4>Select a city in %%cities[user.selectedcountry]['countryName']%%</h4>
+         <select ng-selected="'5'" name="internationalCityID" ng-model="user.selectLocationInt" ng-options="k as v for (k , v) in cities[user.selectedcountry]['cities']">
          </select> 	   
       </div>
-      <div ng-show="user.myVar == 'UK'">
-         <h3>%%myVar%% locations</h3>
-         <select name="UKCIty" ng-model="selectLocation" ng-options="k as v for (k , v) in cities['23']['cities']">
+      <div ng-show="user.region == 'UK'">
+         <h3>%%user.region%% locations</h3>
+         <select ng-init="user.selectLocationUK = {{ old('UKCItyID') }}" name="UKCItyID" ng-model="user.selectLocationUK" ng-options="k as v for (k , v) in cities['23']['cities']">
          </select> 
       </div>
-      <div ng-show="selectLocation">
-         <h3 ng-show="user.myVar == 'UK'">
-            You have selected %%cities['23']['cities'][selectLocation]%%
-         </h3>
-         <h3 ng-show="user.myVar != 'UK'">
-            You have selected %%cities[selectedcountry]['cities'][selectLocation]%%
-         </h3>
+      <div ng-show="user.selectLocationInt || user.selectLocationUK">
+         <h3 ng-show="user.region == 'UK'">You have selected%%cities['23']['cities'][user.selectLocation]%%</h3>
+         <h3 ng-show="user.region != 'UK'">You have selected %%cities[user.selectedcountry]['cities'][user.selectLocation]%%</h3>
          <h4>Select a search type</h4>
-         <select name="searchType" ng-model="searchTypeSelected" ng-options="k as v for (k , v) in searchType"> </select>
+         <select ng-init="user.searchTypeSelected = {{ old('searchType') }}" name="searchType" ng-model="user.searchTypeSelected" ng-options="k as v for (k , v) in searchType"> </select>
       </div>
-      <div ng-show="searchTypeSelected == 1">
-         <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchType[searchTypeSelected]%%</h3>
+      <div ng-if="user.searchTypeSelected == '1'">
+         <div ng-show="user.searchTypeSelected">
+            <h3>You have selected %%searchType[user.searchTypeSelected]%%</h3>
             <h4>Select a category</h4>
-            <select name="bfParentCat" ng-model="bfParentCat" ng-options="k as v['parent']['parentName'] for (k , v) in businessFinder"></select>
+            <select name="bfParent" ng-model="user.bfParent" ng-options="k as v['parent']['parentName'] for (k, v) in businessFinder">
+            </select>
          </div>
-         <div ng-app="" ng-if=category=bfParentCat>
-            <div ng-show="bfParentCat">
-               <h4>Select a sub category in %%businessFinder[bfParentCat]['parent']['parentName']%%</h4>
-               <select name="bfinderChildCategory" ng-model="bfChildCat" ng-options="k as v for (k , v) in businessFinder[bfParentCat]['child']">
+         <div ng-app="" ng-if="user.bfParent">
+            <div ng-show="user.bfParent">
+               <h4>Select a sub category in %%businessFinder[user.bfParent]['parent']['parentName']%%</h4>
+               <select ng-init="user.bfChild = {{ old('bfChild') }}" name="bfChild" ng-model="user.bfChild" ng-options="k as v for (k , v) in businessFinder[user.bfParent]['child']">
                </select>  
             </div>
          </div>
       </div>
-      <div ng-show="searchTypeSelected == '2'">
-         <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchType[searchTypeSelected]%%</h3>
+      <div ng-if="user.searchTypeSelected == '2'">
+         <div ng-show="user.searchTypeSelected">
+            <h3>You have selected %%searchType[user.searchTypeSelected]%%</h3>
             <h4>Select a category</h4>
-            <select name="communityParentCategory" ng-model="comParentCat" ng-options="k as v for (k , v) in communityFinder"></select>		
+            <select ng-init="user.comParent = {{ old('comParent') }}" name="comParent" ng-model="user.comParent" ng-options="k as v for (k , v) in communityFinder"></select>		
          </div>
       </div>
-      <div ng-show="searchTypeSelected == '3'">
-         <div ng-show="searchTypeSelected">
-            <h3>You have selected %%searchType[searchTypeSelected]%%</h3>
+      <div ng-if="user.searchTypeSelected == '3'">
+         <div ng-show="user.searchTypeSelected">
+            <h3>You have selected %%searchType[user.searchTypeSelected]%%</h3>
             <h4>Select a category</h4>
-            <select name="marketParentCategory" ng-model="marketParentCat" ng-options="k as v for (k , v) in marketplace">
+            <select ng-init="user.marketParent = {{ old('marketParent') }}" name="marketParent" ng-model="user.marketParent" ng-options="k as v for (k , v) in marketplace">
             </select>  		
          </div>
       </div>
-      <!-- ########################################################## -->     
+      <!-- ############# create data structures used by angular above ############# -->     
    </div>
    <?php
       $cities = array(); 
@@ -105,23 +102,22 @@ Create an Advert
    <?php 	
       $cityID      = $city->id;
       $cityName    = $city->city_name;
-      $countryID   = $city->country_id;
+      $countryID   = $city->country_id + 0;
       $countryName = $city->country_name;	
-      
       if($city->country_id == 23){
-      //UK
-      // Rest of the world
-      $cities[23]['cities'][$cityID] = $cityName;			
-      $cities[23]['countryName']     = $countryName;			
+		  //UK
+		  // Rest of the world
+		  $cities[23]['cities'][$cityID] = $cityName;			
+		  $cities[23]['countryName']     = $countryName;			
       }else{
-      // Rest of the world
-      $cities[$countryID]['cities'][$cityID] = $cityName;			
-      $cities[$countryID]['countryName']     = $countryName;				
+		  // Rest of the world
+		  $cities[$countryID]['cities'][$cityID] = $cityName;			
+		  $cities[$countryID]['countryName']     = $countryName;				
       }
       ?>
    @endforeach	 
    <?php 
-      $citiesJsonEncoded = json_encode((object)$cities);			
+      $citiesJsonEncoded = json_encode((object)$cities);			 
       $searchtypesArr = array(); 
       ?>
    @foreach ($searchtypes as $type)	
@@ -143,11 +139,11 @@ Create an Advert
       $childName   = $category->searchchildcategory_name;	
       
       if($category->searchtype_id == 1){	
-      $businessFinderArr[$parentID]['parent']['parentName']  = $parentName;	
-      $businessFinderArr[$parentID]['parent']['parentTitle'] = $parentTitle;				
-      $businessFinderArr[$parentID]['child'][$childID]	   = $childName;				
+		  $businessFinderArr[$parentID]['parent']['parentName']  = $parentName;	
+		  $businessFinderArr[$parentID]['parent']['parentTitle'] = $parentTitle;
+		  $businessFinderArr[$parentID]['child'][$childID]	     = $childName;			
       }else if($category->searchtype_id == 2){	
-      $communityFinderArr[$parentID] = $parentName;
+		$communityFinderArr[$parentID] = $parentName;
       }			
       ?>
    @endforeach	 
@@ -164,32 +160,46 @@ Create an Advert
    @endforeach	 
    <?php 
       $marketplaceJsonEncoded = json_encode($marketplaceArr);
-      ?>
+	  ?>
    <script>
       var app = angular.module('myApp', []);
-      
       app.config(function($interpolateProvider) {
-      $interpolateProvider.startSymbol('%%');
-      $interpolateProvider.endSymbol('%%');
+		  $interpolateProvider.startSymbol('%%');
+		  $interpolateProvider.endSymbol('%%');
       });
       
       app.controller('myCtrl', function($scope) {
-      
-      $scope.cities          = <?php echo $citiesJsonEncoded ?>;	
-      $scope.searchType      = <?php echo $searchtypesJsonEncoded ?>;		
-      $scope.businessFinder  = <?php echo $businessFinderJsonEncoded ?>;
-      $scope.communityFinder = <?php echo $communityFinderJsonEncoded ?>;
-      $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
-      
-      $scope.master = {myVar:"{{ old('region') }}", selectedcountry:"{{ old('internationalCountry') }}"};
-      $scope.reset = function() {
-      $scope.user = angular.copy($scope.master);
-      };
-      $scope.reset();
-      
+		  $scope.cities          = <?php echo $citiesJsonEncoded ?>;	
+		  $scope.searchType      = <?php echo $searchtypesJsonEncoded ?>;		
+		  $scope.businessFinder  = <?php echo $businessFinderJsonEncoded ?>;
+		  $scope.communityFinder = <?php echo $communityFinderJsonEncoded ?>;
+		  $scope.marketplace     = <?php echo $marketplaceJsonEncoded;?>;
+		  
+		  var oldInternationalCountryID = ("{{ old('internationalCountryID') }}".split(":"))[1];
+		  var oldInternationalCityID    = ("{{ old('internationalCityID') }}".split(":"))[1];
+		  var oldSearchType = ("{{ old('searchType') }}".split(":"))[1];
+		  var oldBfParent = ("{{ old('bfParent') }}".split(":"))[1];
+		  var oldBfChild  = ("{{ old('bfChild') }}".split(":"))[1];
+		  var oldComParent  = ("{{ old('comParent') }}".split(":"))[1];
+		  var oldMarketParent  = ("{{ old('marketParent') }}".split(":"))[1];
+		  
+		  $scope.master = {
+			  region:"{{ old('region') }}", 
+			  selectedcountry:oldInternationalCountryID,
+			  selectLocationInt:oldInternationalCityID,
+			  searchTypeSelected:oldSearchType,
+			  bfParent:oldBfParent,
+			  bfChild:oldBfChild,
+			  comParent:oldComParent,
+			  oldMarketParent:oldMarketParent
+		  };
+			  $scope.reset = function() {
+			  $scope.user = angular.copy($scope.master);
+		  };
+		  $scope.reset();
       });
    </script>
-   <br /><br />  
+   <br /><br />
    <div class="form-group">
       <textarea name='body' class="form-control">{{ old('body') }}</textarea>
    </div>
