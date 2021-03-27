@@ -1,12 +1,10 @@
                         LARAVEL CODE SAMPLE FROM NEARESTNOW.COM 
 
-Please note nearestnow.com is a work in progress, it is not yet finished, it is at a prototype stage and it is currently not PSR compliant, 
-many modifications are planned, time permitting as my priority at the moment is to find a new job. If you would like to employ me as a full stack Laravel 
-developer, email me at dgstirling@yahoo.co.uk, see duncanstirling.com. During recent months I have been working with Laravel7 with Angular.js and Vue.js. 
--------------------------------------------------------------
-# LARAVEL EXAMPLE
-This example includes code samples taken from nearestnow.com, my personal project.
 
+Please note nearestnow.com is a work in progress, it is at prototype stage however basic functionality does work. If you would like to employ me as a full stack Laravel 
+developer, email me at dgstirling@yahoo.co.uk, see duncanstirling.com. During recent months I have been working with Laravel7, Angular.js and Vue.js. 
+
+Code samples are taken directly from the project however much of the code from each sample has been removed to enable you to focus on the more interesting parts.
 -------------------------------------------------------------
 # DATABASSE
 All tables are prefixed with nn for nearestnow becuase the tables are in a database shared with other applications.
