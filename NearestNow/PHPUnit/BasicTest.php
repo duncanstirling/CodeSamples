@@ -1,35 +1,24 @@
 <?php
-
 namespace Tests\Feature;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class BasicTest extends TestCase
 {
+	// Runs the unit tests using php artisan test
+	
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function testTest1()
+    public function testExample()
     {
-        $response = $this->get('/test1');
+        $response = $this->get('/test');
         $response->assertStatus(200);
     }
 	
-    /**
-     * Home page
-     *
-     * @return void
-     */
-    public function testHome()
-    {
-        $response = $this->get('/');
-        $response->assertStatus(200);
-    }
-
     /**
      * privacy policy link
      *
@@ -39,27 +28,44 @@ class BasicTest extends TestCase
     {
         $response = $this->get('/privacypolicy');
         $response->assertStatus(200);
-    }	
-
-    /**
-     * search
-     *
-     * @return void
-     */
-    public function testSearcch()
-    {
-        $response = $this->get('/search');
-        $response->assertStatus(302);
     }
 	
     /**
-     * redirect to login if create new post without being logged in
+     * test search 1
      *
      * @return void
      */
-    public function testNewPost()
+    public function testHomePageForm1()
     {
-        $response = $this->get('/new-post');
-        $response->assertStatus(302);
+        $response = $this->call('POST', '/search', array(
+			'_token' => csrf_token(),
+			'searchcat' => 'Auto Glass',
+			'catHidden' => '1_1',
+			'searchloc' => 'Brighton',
+			'locHidden' => '23_136',			
+			'test' => '1'
+        ));
+
+		$this->assertEquals(200, $response->getStatusCode());
+    }	
+	
+    /**
+     * test search 2
+     *
+     * @return void
+     */	
+    public function testHomePageForm2()
+    {	
+		$response = $this->withSession(['_token' => 'covfefe'])
+        ->post('/search', [
+			'_token' => 'covfefe',
+			'searchcat' => 'Auto Glass',
+			'catHidden' => '1_1',
+			'searchloc' => 'Brighton',
+			'locHidden' => '23_136',
+			'test' => '1'
+			]);
+
+		$this->assertEquals(200, $response->getStatusCode());
     }		
 }
