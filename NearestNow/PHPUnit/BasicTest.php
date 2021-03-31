@@ -9,13 +9,13 @@ class BasicTest extends TestCase
 	// Runs the unit tests using php artisan test
 	
     /**
-     * A basic feature test example.
+     * register link
      *
      * @return void
      */
-    public function testExample()
+    public function testRegister()
     {
-        $response = $this->get('/test');
+        $response = $this->get('/register');
         $response->assertStatus(200);
     }
 	
@@ -29,6 +29,18 @@ class BasicTest extends TestCase
         $response = $this->get('/privacypolicy');
         $response->assertStatus(200);
     }
+	
+    /**
+     * place advert before logged in
+     *
+     * @return void
+     */
+    public function testAdvertise()
+    {
+        $response = $this->get('/new-post');
+		$response->assertRedirect('auth/login');
+    }	
+	
 	
     /**
      * test search 1
