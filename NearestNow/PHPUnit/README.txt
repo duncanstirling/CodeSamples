@@ -4,6 +4,7 @@ Please note nearestnow.com is a work in progress, it is at prototype stage howev
 developer, email me at dgstirling@yahoo.co.uk, see duncanstirling.com. During recent months I have been working with Laravel7, Angular.js and Vue.js. 
 
 Code samples are taken directly from the project however much of the code from each sample has been removed to enable you to focus on the more interesting parts.
+This project implements Laravel 7.11, Vue.js, Angular.js, JQuery, ES6, Bootstrap, CSS, MySQL and PHPUnit (test examples provided).
 -------------------------------------------------------------
 # PHPUnit
 
