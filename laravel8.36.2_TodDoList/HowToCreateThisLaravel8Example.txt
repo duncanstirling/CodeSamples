@@ -1,0 +1,87 @@
+Laravel8 Notes - How to create ToDo app
+##################################################
+use curl to get composer
+
+# curl -sS https://getcomposer.org/installer | php
+-------------------------------------------------
+use composer to install laravel
+
+# php composer.phar create-project laravel/laravel --prefer-dist
+-------------------------------------------------
+move composer to laravel directory
+
+# move composer.phar composer
+# move composer laravel
+-------------------------------------------------
+add jetstream to composer. Laravel8 comes with Jetstream which provides the following functionality: login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management.
+
+# php composer require laravel/jetstream
+-------------------------------------------------
+install the dependencies in the local node_modules folder
+
+# npm install && npm run dev
+-------------------------------------------------
+when using jetstream you have to chose between intertia and livewire
+php artisan jetstream:install inertia
+composer require inertiajs/inertia-laravel
+
+# php artisan inertia:middleware
+-------------------------------------------------
+Make sure the .env file is correct, i.e. the db driver specified and corresponding db port number
+-------------------------------------------------
+create migration files which will create the db, this, create those migrations using artisan, they could also be seeded
+php artisan make:migration create_tasks_table --create=tasks
+edit the migrations file to this
+
+public function up()
+{
+    Schema::create('tasks', function (Blueprint $table) {
+	  $table->bigIncrements('id');
+	  $table->string('description');
+	  $table->integer('user_id')->unsigned()->index();
+	  $table->timestamps();
+    });
+}
+
+# php artisan migrate
+-------------------------------------------------
+create the tasks model and edit the users model 
+add this to the users model
+
+use App\Models\User;
+class Task extends Model
+{    
+    public function user()
+    {
+    	return $this->belongsTo(User::class);
+    }
+}
+
+add this to the tasks model
+
+use App\Models\Task;
+class User extends Authenticatable
+{
+    public function tasks()
+    {
+    	return $this->hasMany(Task::class);
+    }	  
+}
+-------------------------------------------------
+make the task controller
+
+# php artisan make:controller TasksController
+
+edit web.php in routes directory and add
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TasksController;
+-------------------------------------------------
+install this dependency
+
+# composer require laravel/sanctum
+-------------------------------------------------
+in resources/views create add.blade.php and edit.blade.php and replace the code in dashboard.blade.php
+-------------------------------------------------
+make sure the user model uses the task model and the task model uses the user model i.e. put this in user model
+use App\Models\Task;   
