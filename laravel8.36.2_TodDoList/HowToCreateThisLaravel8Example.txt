@@ -1,5 +1,13 @@
-Laravel8 Notes - How to create ToDo app
-##################################################
+             LARAVEL8 NOTES - HOW TO CREATE TODO APP
+
+This tells you how to create a Laravel8 application and run in a local development environment
+
+1. Obtain composer and use composer to install a Laravel project
+2. Set up a localhost environment so development and production routes match
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+1. USE CURL TO OBTAIN COMPOSER AND CREATE A LARAVEL PROJECT
+
 use curl to get composer
 
 # curl -sS https://getcomposer.org/installer | php
@@ -85,3 +93,28 @@ in resources/views create add.blade.php and edit.blade.php and replace the code 
 -------------------------------------------------
 make sure the user model uses the task model and the task model uses the user model i.e. put this in user model
 use App\Models\Task;   
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2. SET UP A LOCAL HOST ENVIRONMENT
+
+C:/xampp/apache/conf/extra/httpd-vhosts.conf
+Edit httpd-vhosts.conf to add a virtual host
+Add the following code
+
+<VirtualHost toDoListLocal.com>
+    ServerAdmin webmaster@dummy-host2.example.com
+    DocumentRoot "C:/xampp/htdocs/toDoList/laravel/public/"
+    ServerName toDoListLocal.com
+    ErrorLog "logs/dummy-host2.example.com-error.log"
+    CustomLog "logs/dummy-host2.example.com-access.log" common
+</VirtualHost>
+-------------------------------------------------
+C/Windows/System32/drivers/etc/hosts
+
+Edit the hosts file so that your computer looks to resolve a domain name to a local virtual host
+Add the following code
+
+127.0.0.1        localhost 
+127.0.0.1        toDoListLocal.com
+
+
+
