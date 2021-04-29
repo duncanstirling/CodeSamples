@@ -24,15 +24,22 @@ move composer to laravel directory
 add jetstream to composer. Laravel8 comes with Jetstream which provides the following functionality: login, registration, email verification, two-factor authentication, session management, API support via Laravel Sanctum, and optional team management.
 
 # php composer require laravel/jetstream
+
+install Jetstream Auth with Livewire
+# composer require laravel/jetstream
+
+Next install livewire package in laravel 8 app:
+# php artisan jetstream:install livewire
 -------------------------------------------------
 install the dependencies in the local node_modules folder
 
 # npm install && npm run dev
 -------------------------------------------------
 when using jetstream you have to chose between intertia and livewire
-php artisan jetstream:install inertia
-composer require inertiajs/inertia-laravel
+this is how you would install inertial
 
+# php artisan jetstream:install inertia
+# composer require inertiajs/inertia-laravel
 # php artisan inertia:middleware
 -------------------------------------------------
 Make sure the .env file is correct, i.e. the db driver specified and corresponding db port number
