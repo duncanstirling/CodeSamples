@@ -26,5 +26,11 @@ git merge branch2
 git commit -m "merging branch2 with branch3"
 git push 
 
-
+# STASH SAVES VERSIONED FILES WITH UNCOMITTED CHANGES
+# SAVE TO THE STASH
+git stash
+# SHOW WHAT HAS BEEN STASHED
+git stash list
+# RETREIVE THE UNCOMITTED WORK FROM THE STASH
+git stash pop
 
