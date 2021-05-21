@@ -1,0 +1,39 @@
+                    GIT INSTRUCTIONS
+##########################################################
+# START A NEW REPO
+git init
+
+# CREATE A BRANCH, ADD SOMETHING
+git checkout -b branch2
+echo "some info" >> file3.txt
+
+# ADD AND COMMIT THE NEW CONTENT TO THE BRANCH
+git add .
+git commit -m "updated laravel8"
+
+# THE BRANCH IS CURRENTLY HEADLESS, ADD A REMOTE ORIGIN IN A GITHUB ACCOUNT
+git remote add origin https://github.com/duncanstirling/CodeSamples
+
+# PUSH THE NEW BRANCH OUT TO ITS NEW REMOTE ORIGIN
+git push -u origin branch2
+
+# CHECKOUT AN EXISTING REMOTE BRANCH AND MAKE SURE IT IS UPTODATE
+git checkout branch3
+git pull
+
+# MERGE BRANCH2 WITH BRANCH3 THEN UPDATE REMOTE BRANCH
+git merge branch2
+git commit -m "merging branch2 with branch3"
+git push 
+
+# STASH SAVES VERSIONED FILES WITH UNCOMITTED CHANGES
+# SAVE TO THE STASH
+git stash
+# SHOW WHAT HAS BEEN STASHED
+git stash list
+# RETREIVE THE UNCOMITTED WORK FROM THE STASH
+git stash pop
+
+# REVIEW CHANGES BEFORE COMMITTING THEM
+git diff
+
