@@ -8,6 +8,8 @@ https://search.singlegomingle.com
 The landing page will default to either the logon screen 
 or if you are logged on, the dashboard. 
 
+It uses Jetstream/Livewire for user account management.
+
 Feel free to register and log in.
 
 
