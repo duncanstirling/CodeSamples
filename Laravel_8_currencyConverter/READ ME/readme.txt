@@ -28,10 +28,6 @@ Click on the convert candidate rate button to convert the candidates rate
 to different currencies. You can also save this to the candidate record.
 =======================================
 TESTING:
-
-Currently the testing has been manual however I plan to add unit testing. 
-I have confirmed that currency conversions match mathematical conversions 
-done using the rates provided.
  
 It uses an online currency rates api which will default to stored rates if the 
 APIi does not return status 200. I have verified that the online rates convert 
