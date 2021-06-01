@@ -1,8 +1,8 @@
 <?php
 
 return [
-
     /*
+	php artisan optimize:clear
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
@@ -231,5 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+	
+	'currencyapi' => 'remote',
 
 ];
