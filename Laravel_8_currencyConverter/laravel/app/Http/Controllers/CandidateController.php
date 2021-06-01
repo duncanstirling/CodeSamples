@@ -41,10 +41,6 @@ class CandidateController extends Controller
 		$candidate->rate        = $request->rate;
     	$candidate->user_id     = auth()->user()->id;
 		
-		
-		//echo "<pre>", print_r($candidate, 1), "</pre>";
-		//exit;
-		
     	$candidate->save();
     	return redirect('/dashboard'); 
     }
@@ -76,7 +72,7 @@ class CandidateController extends Controller
 		$response         = $currencyAPI->getCurrentRatesFromApi();
 		$status           = $response->getStatusCode();
 				
-		if($status != 200){
+		if($status != 200 || config('app.currencyapi') == 'remote'){
 			//remote API unvailable, use fixed stored rates
 			$response         = $currencyAPI->getFixedDefaultRates();
 			$fixedRates       = json_decode($response);
