@@ -33,7 +33,6 @@ $(document).ready(function () {
 				console.log(rate);
 				$('#rate').val(rate);
 				$('#oldCurrency').val(newCurrency);
-				$('#currency').val('');
 				return response;
 			},
 			error: function() {
