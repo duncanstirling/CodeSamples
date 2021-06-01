@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Candidate;
+use App\Models\CurrencyApi;
 
 use Illuminate\Support\Facades\Storage;
 //use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Client;
+//use GuzzleHttp\Client;
 
 class CandidateController extends Controller
 {
@@ -54,27 +55,6 @@ class CandidateController extends Controller
 		}            	
     }
 
-    private function getCurrentRatesFromApi()
-    {
-		$client = new Client([
-			'base_uri' => 'http://api.exchangeratesapi.io/v1/',
-		]);
-		
-		$response = $client->request('GET', 'latest', [
-			'query' => [
-			'access_key' => '690acd5a709d7ef967e54403ae5ef36b',			
-			'base' => 'EUR',
-			'symbols' => 'USD,GBP,EUR'
-			]
-		]);	
-		return $response;	
-	}
-
-    private function getFixedDefaultRates()
-    {
-		return Storage::get('/info.txt');
-	}
-
     public function convertcurrency(Request $request)
     {
 		$this->validate($request, [
@@ -87,12 +67,13 @@ class CandidateController extends Controller
 		$newCurrency      = $request->newCurrency;
 		$oldCandidateRate = $request->rate;	
 		
-		$response = $this->getCurrentRatesFromApi();
-		$status   = $response->getStatusCode();
+		$currencyAPI      = new CurrencyApi();
+		$response         = $currencyAPI->getCurrentRatesFromApi();
+		$status           = $response->getStatusCode();
 				
 		if($status != 200){
 			//remote API unvailable, use fixed stored rates
-			$response         = $this->getFixedDefaultRates();
+			$response         = $currencyAPI->getFixedDefaultRates();
 			$fixedRates       = json_decode($response);
 			$conversionFactor = $fixedRates->{$oldCurrency}->{$newCurrency};
 		    $newCandidateRate = floatval($conversionFactor) * floatval($oldCandidateRate);
