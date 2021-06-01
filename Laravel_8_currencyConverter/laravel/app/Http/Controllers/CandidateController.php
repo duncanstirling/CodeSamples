@@ -40,6 +40,11 @@ class CandidateController extends Controller
 		$candidate->currency    = $request->currency;
 		$candidate->rate        = $request->rate;
     	$candidate->user_id     = auth()->user()->id;
+		
+		
+		//echo "<pre>", print_r($candidate, 1), "</pre>";
+		//exit;
+		
     	$candidate->save();
     	return redirect('/dashboard'); 
     }
