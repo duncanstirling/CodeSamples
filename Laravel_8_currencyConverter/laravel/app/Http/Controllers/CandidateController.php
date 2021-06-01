@@ -72,7 +72,7 @@ class CandidateController extends Controller
 		$response         = $currencyAPI->getCurrentRatesFromApi();
 		$status           = $response->getStatusCode();
 				
-		if($status != 200 || config('app.currencyapi') == 'remote'){
+		if($status != 200 || config('app.currencyapi') != 'remote'){
 			//remote API unvailable, use fixed stored rates
 			$response         = $currencyAPI->getFixedDefaultRates();
 			$fixedRates       = json_decode($response);
