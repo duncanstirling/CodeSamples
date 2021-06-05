@@ -12,7 +12,7 @@ git clone https://github.com/duncanstirling/CodeSamples.git AAA
 # START A NEW REPO
 git init
 
-# CREATE A LOCALLY BRANCH, ADD SOMETHING
+# CREATE A LOCALLY BRANCH, ADD SOMETHING (FROM HERE ONWARDS APPLIES TO CLONED REPOS TOO)
 git checkout -b branch2
 echo "some info" >> file3.txt
 
