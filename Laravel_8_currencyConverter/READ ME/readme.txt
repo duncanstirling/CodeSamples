@@ -26,6 +26,9 @@ Click on the add candidate button to enter a rate and currency
 CONVERTCANDIDATERATE
 Click on the convert candidate rate button to convert the candidates rate 
 to different currencies. You can also save this to the candidate record.
+
+PHPUnit Tests
+All Feature unit tests run without errors
 =======================================
 TESTING:
  
