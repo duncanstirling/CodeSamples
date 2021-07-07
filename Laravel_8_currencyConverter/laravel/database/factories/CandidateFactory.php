@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Candidate;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CandidateFactory extends Factory
@@ -25,7 +26,7 @@ class CandidateFactory extends Factory
 			'description' => $this->faker->text,
 			'currency'    => $this->faker->randomElement(['EUR', 'GBP', 'USD']),
 			'rate'        => $this->faker->randomDigit,
-			'user_id'     => 1
+			'user_id'     => User::factory()
 		];
 	}
 }
