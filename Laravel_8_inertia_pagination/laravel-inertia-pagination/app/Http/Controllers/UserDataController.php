@@ -10,8 +10,8 @@ class UserDataController extends Controller
 
     public function index()
     {
-        $usersList = User::orderBy('id', 'desc')
-                        ->paginate(6);
+        $usersList = User::orderBy('id', 'asc')
+                        ->paginate(10);
   
         return Inertia::render('UserView', [
             'usersList' => $usersList
