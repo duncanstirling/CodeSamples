@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,15 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 // https://litvinjuan.medium.com/how-to-fix-target-class-does-not-exist-in-laravel-8-f9e28b79f8b4
-Route::get('/greeting', 'App\Http\Controllers\API\PostController@test');
+Route::get('greeting', [PostController::class, 'test']);
 
-Route::get('posts', 'App\Http\Controllers\API\PostController@index');
+Route::get('posts', [PostController::class, 'index']);
+
 Route::group(['prefix' => 'post'], function () {
-    Route::get('add', 'App\Http\Controllers\API\PostController@add');
-    Route::post('add', 'App\Http\Controllers\API\PostController@add');
-    Route::get('edit/{id}', 'App\Http\Controllers\API\PostController@edit');
-    Route::post('update/{id}', 'App\Http\Controllers\API\PostController@update');
-    Route::delete('delete/{id}', 'App\Http\Controllers\API\PostController@delete');
+    Route::get('add', [PostController::class, 'add']);
+    Route::post('add', [PostController::class, 'add']);
+    Route::get('edit/{id}', [PostController::class, 'edit']);
+    Route::post('update/{id}', [PostController::class, 'update']);
+    Route::delete('delete/{id}', [PostController::class, 'delete']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
