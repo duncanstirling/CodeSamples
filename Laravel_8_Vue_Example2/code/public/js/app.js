@@ -1860,6 +1860,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
@@ -2074,14 +2077,10 @@ __webpack_require__.r(__webpack_exports__);
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); //window.Vue = require('vue');
-//import Vue from 'vue/dist/vue';
-//window.Vue = Vue;
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
-
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"); //window.Vue = require('vue').default;
-
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 
 
 
@@ -37889,6 +37888,8 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
+      _vm._m(0),
+      _vm._v(" "),
       _c(
         "nav",
         { staticClass: "navbar navbar-expand-lg navbar-light bg-light" },
@@ -37924,7 +37925,27 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "text-center",
+        staticStyle: { margin: "20px 0px 20px 0px" }
+      },
+      [
+        _c("span", { staticClass: "text-secondary" }, [
+          _vm._v(
+            "Laravel Vue CRUD Example - Duncan Stirling learning excersize"
+          )
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 

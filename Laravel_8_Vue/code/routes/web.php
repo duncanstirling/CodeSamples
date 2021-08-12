@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('{any}', function () {
-    return view('layouts.app');
+    return view('layout.app');
 })->where('any', '.*');
 
 Route::get('/', function () {

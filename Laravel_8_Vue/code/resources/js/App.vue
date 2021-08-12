@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="text-center" style="margin: 20px 0px 20px 0px;">
-            <span class="text-secondary">Laravel Vue CRUD Example</span>
+            <span class="text-secondary">Laravel Vue CRUD Example - Duncan Stirling learning excersize</span>
         </div>
  
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
